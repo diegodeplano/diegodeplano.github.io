@@ -17,7 +17,7 @@ EXAMPLE REPLACEMENT:
 {{CONF_NAME}} -> CPU24
 {{TITLE}} -> Paper Title in Title Case
 {{DOI_URL}} -> https://doi.org/...
-{{AUTHORS}} -> A. Author, D. Deplano, C. Colleague
+{{AUTHORS}} -> A. Author, <span style="text-decoration: underline !important;">D. Deplano</span>, C. Colleague (use the exact author names provided, include underline on the corresponding author)
 {{CONF_FULL}} -> Conference on Paper Uploading System 2024
 {{YEAR}} -> 2024
 ================================= -->
@@ -66,7 +66,7 @@ EXAMPLE REPLACEMENT:
         <div class="u-layout-row">
           <div class="u-container-style u-layout-cell u-size-1-sm u-size-1-xs u-size-10-lg u-size-10-md u-size-10-xl u-layout-cell-1">
             <div class="u-container-layout u-container-layout-1">
-              <img class="u-hidden-sm u-hidden-xs u-image u-image-default u-preserve-proportions u-image-1" src="images/{{CONF_NAME}}.jpg" alt="Conference Logo" data-image-width="560" data-image-height="310">
+              <img class="u-hidden-sm u-hidden-xs u-image u-image-default u-preserve-proportions u-image-1" src="images/{{CONF_NAME}}.jpg" alt="Conference Logo" data-image-width="560" data-image-height="310" data-href="{{CONF_URL}}">
             </div>
           </div>
           <div class="u-container-style u-layout-cell u-size-47-lg u-size-47-md u-size-47-xl u-size-52-xs u-size-54-sm u-layout-cell-2">
