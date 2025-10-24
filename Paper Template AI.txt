@@ -1,0 +1,105 @@
+<!-- ==================================
+AI TEMPLATE FOR ADDING NEW PAPERS TO Publications.html
+
+This template is optimized for AI use with clear placeholders and instructions.
+Replace ALL {{PLACEHOLDER}} strings with actual values.
+
+USAGE INSTRUCTIONS:
+1. Choose the appropriate template (JOURNAL or CONFERENCE)
+2. Replace all placeholders with actual data
+3. Upload required files: images/{{CONF_NAME}}.jpg, files/{{CONF_NAME}}_paper.pdf, files/{{CONF_NAME}}_slides.pdf
+4. Add to Publications.html after the last existing publication
+5. Add divider section if needed between publication groups
+6. Update Publications.css groupings if using a new section number
+
+EXAMPLE REPLACEMENT:
+{{SECTION_NUM}} -> 29
+{{CONF_NAME}} -> CPU24
+{{TITLE}} -> Paper Title in Title Case
+{{DOI_URL}} -> https://doi.org/...
+{{AUTHORS}} -> A. Author, D. Deplano, C. Colleague
+{{CONF_FULL}} -> Conference on Paper Uploading System 2024
+{{YEAR}} -> 2024
+================================= -->
+
+<!-- JOURNAL PAPER TEMPLATE -->
+<section class="u-clearfix u-section-{{SECTION_NUM}}" id="section-{{SECTION_NUM}}">
+  <div class="u-clearfix u-sheet u-sheet-1">
+    <div class="data-layout-selected u-clearfix u-expanded-width u-layout-custom-sm u-layout-custom-xs u-layout-wrap u-layout-wrap-1">
+      <div class="u-layout">
+        <div class="u-layout-row">
+          <div class="u-container-style u-layout-cell u-size-1-sm u-size-1-xs u-size-10-lg u-size-10-md u-size-10-xl u-layout-cell-1">
+            <div class="u-container-layout u-container-layout-1">
+              <img class="u-hidden-sm u-hidden-xs u-image u-image-default u-preserve-proportions u-image-1" src="images/{{JOURNAL_ABBREV}}.png" alt="Journal Logo" data-image-width="560" data-image-height="310">
+            </div>
+          </div>
+          <div class="u-container-style u-layout-cell u-size-47-lg u-size-47-md u-size-47-xl u-size-52-xs u-size-54-sm u-layout-cell-2">
+            <div class="u-container-layout u-container-layout-2">
+              <p class="u-custom-font u-font-oswald u-text u-text-default u-text-1">
+                <a href="{{DOI_URL}}" class="u-active-none u-border-none u-btn u-button-link u-button-style u-hover-none u-none u-text-black u-text-hover-palette-2-base u-btn-1" target="_blank">{{TITLE}}</a>
+                <br>
+              </p>
+              <p class="u-text u-text-2">
+                <span style="font-weight: 700;">{{AUTHORS}}</span>,
+                "{{FULL_PAPER_TITLE}}", {{JOURNAL_NAME}}, Vol. {{VOL}}, No. {{ISSUE}}, pp. {{PAGES}}, {{YEAR}}
+                <br>Material links: <a href="files/{{JOURNAL_ABBREV}}_{{YEAR}}_paper.pdf" class="u-active-none u-border-none u-btn u-button-link u-button-style u-file-link u-hover-none u-none u-text-black u-text-hover-palette-2-base u-btn-2" target="_blank">Manuscript</a>
+              </p>
+            </div>
+          </div>
+          <div class="u-container-style u-layout-cell u-size-3-lg u-size-3-md u-size-3-xl u-size-5-sm u-size-7-xs u-layout-cell-3">
+            <div class="u-container-layout u-valign-top u-container-layout-3">
+              <p class="u-align-center u-custom-font u-font-oswald u-text u-text-default u-text-3">[{{YEAR}}]</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- CONFERENCE PAPER TEMPLATE -->
+<section class="u-clearfix u-section-C{{SECTION_NUM}}" id="section-C{{SECTION_NUM}}">
+  <div class="u-clearfix u-sheet u-sheet-1">
+    <div class="data-layout-selected u-clearfix u-expanded-width u-layout-custom-sm u-layout-custom-xs u-layout-wrap u-layout-wrap-1">
+      <div class="u-layout">
+        <div class="u-layout-row">
+          <div class="u-container-style u-layout-cell u-size-1-sm u-size-1-xs u-size-10-lg u-size-10-md u-size-10-xl u-layout-cell-1">
+            <div class="u-container-layout u-container-layout-1">
+              <img class="u-hidden-sm u-hidden-xs u-image u-image-default u-preserve-proportions u-image-1" src="images/{{CONF_NAME}}.jpg" alt="Conference Logo" data-image-width="560" data-image-height="310">
+            </div>
+          </div>
+          <div class="u-container-style u-layout-cell u-size-47-lg u-size-47-md u-size-47-xl u-size-52-xs u-size-54-sm u-layout-cell-2">
+            <div class="u-container-layout u-container-layout-2">
+              <p class="u-custom-font u-font-oswald u-text u-text-default u-text-1">
+                <a href="{{CONF_URL}}" class="u-active-none u-border-none u-btn u-button-link u-button-style u-hover-none u-none u-text-black u-text-hover-palette-2-base u-btn-1" target="_blank">{{TITLE}}</a>
+                <br>
+              </p>
+              <p class="u-text u-text-2">
+                <span style="font-weight: 700;">{{AUTHORS}}</span>,
+                "{{FULL_PAPER_TITLE}}", {{CONF_FULL}}, {{LOCATION}}, {{DATES}}
+                <br>Material links: <a href="files/{{CONF_NAME}}_paper.pdf" class="u-active-none u-border-none u-btn u-button-link u-button-style u-file-link u-hover-none u-none u-text-black u-text-hover-palette-2-base u-btn-2" target="_blank">Manuscript</a>
+                <span style="font-style: italic;"> &nbsp; &nbsp; &nbsp;-&nbsp; &nbsp; &nbsp; <a href="files/{{CONF_NAME}}_slides.pdf" class="u-active-none u-border-none u-btn u-button-link u-button-style u-file-link u-hover-none u-none u-text-black u-text-hover-palette-2-base u-btn-3" target="_blank">Slides</a>
+                </span>
+                {{OPTIONAL_VIDEO_LINK}}
+              </p>
+            </div>
+          </div>
+          <div class="u-container-style u-layout-cell u-size-3-lg u-size-3-md u-size-3-xl u-size-5-sm u-size-7-xs u-layout-cell-3">
+            <div class="u-container-layout u-valign-top u-container-layout-3">
+              <p class="u-align-center u-custom-font u-font-oswald u-text u-text-default u-text-3">[{{YEAR}}]</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- DIVIDER LINE TEMPLATE -->
+<section class="u-clearfix u-section-{{SECTION_NUM}}" id="section-{{SECTION_NUM}}">
+  <div class="u-clearfix u-sheet u-sheet-1">
+    <div class="u-align-center u-border-3 u-border-palette-2-base u-line u-line-horizontal u-line-1"></div>
+  </div>
+</section>
