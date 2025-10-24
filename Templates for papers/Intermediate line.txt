@@ -1,0 +1,46 @@
+BODY:
+
+    <section class="u-clearfix u-section-16" id="carousel_6d8a">
+      <div class="u-clearfix u-sheet u-sheet-1">
+        <div class="u-align-center u-border-3 u-border-palette-2-base u-line u-line-horizontal u-line-1"></div>
+      </div>
+    </section>
+
+STYLE:
+
+
+.u-section-16 .u-sheet-1 {
+  min-height: 17px;
+}
+
+.u-section-16 .u-line-1 {
+  width: 1200px;
+  height: 3px;
+  margin: 7px -30px;
+}
+
+@media (max-width: 1199px) {
+  .u-section-16 .u-line-1 {
+    width: 940px;
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 991px) {
+  .u-section-16 .u-line-1 {
+    width: 720px;
+  }
+}
+
+@media (max-width: 767px) {
+  .u-section-16 .u-line-1 {
+    width: 540px;
+  }
+}
+
+@media (max-width: 575px) {
+  .u-section-16 .u-line-1 {
+    width: 340px;
+  }
+}
