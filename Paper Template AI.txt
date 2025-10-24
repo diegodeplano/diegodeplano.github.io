@@ -8,10 +8,16 @@ UPLOAD REQUIREMENTS:
 - Journal: Upload images/{{IMG_SRC}}.jpg and files/{{FILE_BASE}}_paper.pdf
 - Conference: Upload images/{{CONF_IMG}}.jpg and files/{{FILE_BASE}}_paper.pdf + files/{{FILE_BASE}}_slides.pdf (if available)
 
+PLACEHOLDER MEANINGS:
+- {{DOI_LINK}}: Journal DOI or IEEE Xplore manuscript link (FULL URL for conferences)
+- {{JOURNAL_URL}}: Journal website homepage for image link
+- {{CONF_URL}}: Conference homepage URL
+- {{FILE_BASE}}: Base filename (e.g., SINGLE_PAPER_NAME)
+
 PLACING IN FILE:
 - Add BEFORE the closing </div> of the journal or conference category section (i.e., before category lines)
 - Follow each paper with its line template immediately after
-- Use numbering: J1 (oldest journal) to J9, C1 (oldest conference) to C13
+- Use numbering: J1 (oldest journal) to J9, C15 (newest conference) downward
 
 ================================= -->
 
@@ -68,7 +74,7 @@ PLACING IN FILE:
           <div class="u-container-style u-layout-cell u-size-47-lg u-size-47-md u-size-47-xl u-size-52-xs u-size-54-sm u-layout-cell-2">
             <div class="u-container-layout u-container-layout-2">
               <p class="u-custom-font u-font-oswald u-text u-text-default u-text-1">
-                <a href="{{CONF_URL}}" class="u-active-none u-border-none u-btn u-button-link u-button-style u-hover-none u-none u-text-black u-text-hover-palette-2-base u-btn-1" target="_blank">{{PAPER_TITLE}}</a>
+                <a href="{{DOI_LINK}}" class="u-active-none u-border-none u-btn u-button-link u-button-style u-hover-none u-none u-text-black u-text-hover-palette-2-base u-btn-1" target="_blank">{{PAPER_TITLE}}</a>
                 <br>
               </p>
               <p class="u-text u-text-2"> {{AUTHORS}}<br>{{CONF_INFO}}<br>Material links:&nbsp; &nbsp; &nbsp; <a href="files/{{FILE_BASE}}_paper.pdf" class="u-active-none u-border-none u-btn u-button-link u-button-style u-file-link u-hover-none u-none u-text-black u-text-hover-palette-2-base u-btn-2" target="_blank">Manuscript</a>
