@@ -1,59 +1,44 @@
 <!-- ==================================
-AI TEMPLATE FOR ADDING NEW PAPERS TO Publications.html
+TEMPLATES FOR ADDING NEW PAPERS TO Publications.html
 
-This template is optimized for AI use with clear placeholders and instructions.
+Copy the full HTML block for the appropriate template.
 Replace ALL {{PLACEHOLDER}} strings with actual values.
 
-USAGE INSTRUCTIONS:
-1. Choose the appropriate template (JOURNAL or CONFERENCE)
-2. Replace all placeholders with actual data
-3. Upload required image: images/{{IMG_NAME}}.jpg (for journal) or images/{{CONF_NAME}}.jpg (for conference)
-4. Upload required files: files/{{JOURNAL_ABBREV}}_{{YEAR}}_paper.pdf (journals) or files/{{CONF_NAME}}_paper.pdf + files/{{CONF_NAME}}_slides.pdf (conferences)
-5. Add to Publications.html after the last publication of the same type
-6. Add corresponding line section immediately after each paper section
-7. For journals: Use the next available number (J1 to J9, where J1 is oldest)
-8. For conferences: Use the next available number (C1 to C13, where C1 is oldest)
+UPLOAD REQUIREMENTS:
+- Journal: Upload images/{{IMG_SRC}}.jpg and files/{{FILE_BASE}}_paper.pdf
+- Conference: Upload images/{{CONF_IMG}}.jpg and files/{{FILE_BASE}}_paper.pdf + files/{{FILE_BASE}}_slides.pdf (if available)
 
-EXAMPLE REPLACEMENT:
-{{SECTION_NUM}} -> 5 (for J5 or C5)
-{{CONF_NAME}} -> CPU24
-{{TITLE}} -> Paper Title in Title Case
-{{DOI_URL}} -> https://doi.org/...
-{{AUTHORS}} -> A. Author, <span style="text-decoration: underline !important;">D. Deplano</span>, C. Colleague
-{{CONF_FULL}} -> Conference on Paper Uploading System 2024
-{{LOCATION}} -> Virtual Conference
-{{DATES}} -> June 15-17, 2024
-{{YEAR}} -> 2024
+PLACING IN FILE:
+- Add BEFORE the closing </div> of the journal or conference category section (i.e., before category lines)
+- Follow each paper with its line template immediately after
+- Use numbering: J1 (oldest journal) to J9, C1 (oldest conference) to C13
+
 ================================= -->
 
 <!-- JOURNAL PAPER TEMPLATE -->
-<section class="u-clearfix u-section-paper" id="section-J{{SECTION_NUM}}">
+<section class="u-clearfix u-section-paper" id="section-J{{NUM}}">
   <div class="u-clearfix u-sheet u-sheet-1">
     <div class="data-layout-selected u-clearfix u-expanded-width u-layout-custom-sm u-layout-custom-xs u-layout-wrap u-layout-wrap-1">
       <div class="u-layout">
         <div class="u-layout-row">
           <div class="u-container-style u-layout-cell u-size-1-sm u-size-1-xs u-size-10-lg u-size-10-md u-size-10-xl u-layout-cell-1">
             <div class="u-container-layout u-container-layout-1">
-              <img class="u-hidden-sm u-hidden-xs u-image u-image-default u-preserve-proportions u-image-1" src="images/{{IMG_NAME}}.jpg" alt="Journal Logo" data-image-width="560" data-image-height="310">
+              <img class="u-hidden-sm u-hidden-xs u-image u-image-default u-preserve-proportions u-image-1" src="images/{{IMG_SRC}}.jpg" alt="" data-image-width="560" data-image-height="310" data-href="https://{{JOURNAL_URL}}">
             </div>
           </div>
           <div class="u-container-style u-layout-cell u-size-47-lg u-size-47-md u-size-47-xl u-size-52-xs u-size-54-sm u-layout-cell-2">
             <div class="u-container-layout u-container-layout-2">
               <p class="u-custom-font u-font-oswald u-text u-text-default u-text-1">
-                <a href="{{DOI_URL}}" class="u-active-none u-border-none u-btn u-button-link u-button-style u-hover-none u-none u-text-black u-text-hover-palette-2-base u-btn-1" target="_blank">{{TITLE}}</a>
+                <a href="https://{{DOI_LINK}}" class="u-active-none u-border-none u-btn u-button-link u-button-style u-hover-none u-none u-text-black u-text-hover-palette-2-base u-btn-1" target="_blank">{{PAPER_TITLE}}</a>
                 <br>
               </p>
-              <p class="u-text u-text-2">
-                <span style="text-decoration: underline !important;">{{AUTHORS}}</span>,
-                "{{FULL_PAPER_TITLE}}", {{JOURNAL_NAME}}, Vol. {{VOL}}, No. {{ISSUE}}, pp. {{PAGES}}, {{YEAR}}
-                <br>Material links:<a href="files/{{JOURNAL_ABBREV}}_{{YEAR}}_paper.pdf" class="u-active-none u-border-none u-btn u-button-link u-button-style u-file-link u-hover-none u-none u-text-black u-text-hover-palette-2-base u-btn-2" target="_blank">Manuscript</a>
-                {{OPTIONAL_ADDITIONAL_LINK}}
+              <p class="u-text u-text-2"> {{AUTHORS}}<br>{{JOURNAL_INFO}}<br>Material links:&nbsp; &nbsp; &nbsp; <a href="files/{{FILE_BASE}}_paper.pdf" class="u-active-none u-border-none u-btn u-button-link u-button-style u-file-link u-hover-none u-none u-text-black u-text-hover-palette-2-base u-btn-2" target="_blank">Manuscript</a>
               </p>
             </div>
           </div>
           <div class="u-container-style u-layout-cell u-size-3-lg u-size-3-md u-size-3-xl u-size-5-sm u-size-7-xs u-layout-cell-3">
             <div class="u-container-layout u-valign-top u-container-layout-3">
-              <p class="u-align-center u-custom-font u-font-oswald u-text u-text-default u-text-3">[J{{SECTION_NUM}}]</p>
+              <p class="u-align-center u-custom-font u-font-oswald u-text u-text-default u-text-3">[J{{NUM}}]</p>
             </div>
           </div>
         </div>
@@ -62,45 +47,39 @@ EXAMPLE REPLACEMENT:
   </div>
 </section>
 
-
 <!-- JOURNAL LINE TEMPLATE -->
-<section class="u-clearfix u-section-line" id="section-line-J{{SECTION_NUM}}">
+<section class="u-clearfix u-section-line" id="section-line-J{{NUM}}">
   <div class="u-clearfix u-sheet u-sheet-1">
     <div class="u-align-center u-border-3 u-border-palette-2-base u-line u-line-horizontal u-line-1"></div>
   </div>
 </section>
 
-
 <!-- CONFERENCE PAPER TEMPLATE -->
-<section class="u-clearfix u-section-paper" id="section-C{{SECTION_NUM}}">
+<section class="u-clearfix u-section-paper" id="section-C{{NUM}}">
   <div class="u-clearfix u-sheet u-sheet-1">
     <div class="data-layout-selected u-clearfix u-expanded-width u-layout-custom-sm u-layout-custom-xs u-layout-wrap u-layout-wrap-1">
       <div class="u-layout">
         <div class="u-layout-row">
           <div class="u-container-style u-layout-cell u-size-1-sm u-size-1-xs u-size-10-lg u-size-10-md u-size-10-xl u-layout-cell-1">
             <div class="u-container-layout u-container-layout-1">
-              <img class="u-hidden-sm u-hidden-xs u-image u-image-default u-preserve-proportions u-image-1" src="images/{{CONF_NAME}}.jpg" alt="Conference Logo" data-image-width="560" data-image-height="310" data-href="{{CONF_URL}}">
+              <img class="u-hidden-sm u-hidden-xs u-image u-image-default u-preserve-proportions u-image-1" src="images/{{CONF_IMG}}.jpg" alt="" data-image-width="560" data-image-height="310" data-href="{{CONF_URL}}">
             </div>
           </div>
           <div class="u-container-style u-layout-cell u-size-47-lg u-size-47-md u-size-47-xl u-size-52-xs u-size-54-sm u-layout-cell-2">
             <div class="u-container-layout u-container-layout-2">
               <p class="u-custom-font u-font-oswald u-text u-text-default u-text-1">
-                <a href="{{CONF_URL}}" class="u-active-none u-border-none u-btn u-button-link u-button-style u-hover-none u-none u-text-black u-text-hover-palette-2-base u-btn-1" target="_blank">{{TITLE}}</a>
+                <a href="{{CONF_URL}}" class="u-active-none u-border-none u-btn u-button-link u-button-style u-hover-none u-none u-text-black u-text-hover-palette-2-base u-btn-1" target="_blank">{{PAPER_TITLE}}</a>
                 <br>
               </p>
-              <p class="u-text u-text-2">
-                <span style="text-decoration: underline !important;">{{AUTHORS}}</span>,
-                "{{FULL_PAPER_TITLE}}", {{CONF_FULL}}, {{LOCATION}}, {{DATES}}
-                <br>Material links:<a href="files/{{CONF_NAME}}_paper.pdf" class="u-active-none u-border-none u-btn u-button-link u-button-style u-file-link u-hover-none u-none u-text-black u-text-hover-palette-2-base u-btn-2" target="_blank">Manuscript</a>
-                <span style="font-style: italic;"> &nbsp; &nbsp; &nbsp;-&nbsp; &nbsp; &nbsp; <a href="files/{{CONF_NAME}}_slides.pdf" class="u-active-none u-border-none u-btn u-button-link u-button-style u-file-link u-hover-none u-none u-text-black u-text-hover-palette-2-base u-btn-3" target="_blank">Slides</a>
+              <p class="u-text u-text-2"> {{AUTHORS}}<br>{{CONF_INFO}}<br>Material links:&nbsp; &nbsp; &nbsp; <a href="files/{{FILE_BASE}}_paper.pdf" class="u-active-none u-border-none u-btn u-button-link u-button-style u-file-link u-hover-none u-none u-text-black u-text-hover-palette-2-base u-btn-2" target="_blank">Manuscript</a>
+                <span style="font-style: italic;"> &nbsp; &nbsp; &nbsp;-&nbsp; &nbsp; &nbsp; <a href="files/{{FILE_BASE}}_slides.pdf" class="u-active-none u-border-none u-btn u-button-link u-button-style u-file-link u-hover-none u-none u-text-black u-text-hover-palette-2-base u-btn-3" target="_blank">Slides</a>
                 </span>
-                {{OPTIONAL_VIDEO_LINK}}
               </p>
             </div>
           </div>
           <div class="u-container-style u-layout-cell u-size-3-lg u-size-3-md u-size-3-xl u-size-5-sm u-size-7-xs u-layout-cell-3">
             <div class="u-container-layout u-valign-top u-container-layout-3">
-              <p class="u-align-center u-custom-font u-font-oswald u-text u-text-default u-text-3">[C{{SECTION_NUM}}]</p>
+              <p class="u-align-center u-custom-font u-font-oswald u-text u-text-default u-text-3">[C{{NUM}}]</p>
             </div>
           </div>
         </div>
@@ -109,9 +88,8 @@ EXAMPLE REPLACEMENT:
   </div>
 </section>
 
-
 <!-- CONFERENCE LINE TEMPLATE -->
-<section class="u-clearfix u-section-line" id="section-line-C{{SECTION_NUM}}">
+<section class="u-clearfix u-section-line" id="section-line-C{{NUM}}">
   <div class="u-clearfix u-sheet u-sheet-1">
     <div class="u-align-center u-border-3 u-border-palette-2-base u-line u-line-horizontal u-line-1"></div>
   </div>
