@@ -17,7 +17,7 @@ EXAMPLE REPLACEMENT:
 {{CONF_NAME}} -> CPU24
 {{TITLE}} -> Paper Title in Title Case
 {{DOI_URL}} -> https://doi.org/...
-{{AUTHORS}} -> A. Author, D. Deplano, C. Colleague* (where * denotes corresponding author)
+{{AUTHORS}} -> A. Author, D. Deplano, C. Colleague
 {{CONF_FULL}} -> Conference on Paper Uploading System 2024
 {{YEAR}} -> 2024
 ================================= -->
