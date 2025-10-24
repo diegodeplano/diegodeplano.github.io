@@ -17,7 +17,7 @@ EXAMPLE REPLACEMENT:
 {{CONF_NAME}} -> CPU24
 {{TITLE}} -> Paper Title in Title Case
 {{DOI_URL}} -> https://doi.org/...
-{{AUTHORS}} -> A. Author, D. Deplano, C. Colleague
+{{AUTHORS}} -> A. Author, D. Deplano, C. Colleague* (where * denotes corresponding author)
 {{CONF_FULL}} -> Conference on Paper Uploading System 2024
 {{YEAR}} -> 2024
 ================================= -->
@@ -40,9 +40,9 @@ EXAMPLE REPLACEMENT:
                 <br>
               </p>
               <p class="u-text u-text-2">
-                <span style="font-weight: 700;">{{AUTHORS}}</span>,
+                <span style="text-decoration: underline !important;">{{AUTHORS}}</span>,
                 "{{FULL_PAPER_TITLE}}", {{JOURNAL_NAME}}, Vol. {{VOL}}, No. {{ISSUE}}, pp. {{PAGES}}, {{YEAR}}
-                <br>Material links: <a href="files/{{JOURNAL_ABBREV}}_{{YEAR}}_paper.pdf" class="u-active-none u-border-none u-btn u-button-link u-button-style u-file-link u-hover-none u-none u-text-black u-text-hover-palette-2-base u-btn-2" target="_blank">Manuscript</a>
+                <br>Material links:<a href="files/{{JOURNAL_ABBREV}}_{{YEAR}}_paper.pdf" class="u-active-none u-border-none u-btn u-button-link u-button-style u-file-link u-hover-none u-none u-text-black u-text-hover-palette-2-base u-btn-2" target="_blank">Manuscript</a>
               </p>
             </div>
           </div>
@@ -76,9 +76,9 @@ EXAMPLE REPLACEMENT:
                 <br>
               </p>
               <p class="u-text u-text-2">
-                <span style="font-weight: 700;">{{AUTHORS}}</span>,
+                <span style="text-decoration: underline !important;">{{AUTHORS}}</span>,
                 "{{FULL_PAPER_TITLE}}", {{CONF_FULL}}, {{LOCATION}}, {{DATES}}
-                <br>Material links: <a href="files/{{CONF_NAME}}_paper.pdf" class="u-active-none u-border-none u-btn u-button-link u-button-style u-file-link u-hover-none u-none u-text-black u-text-hover-palette-2-base u-btn-2" target="_blank">Manuscript</a>
+                <br>Material links:<a href="files/{{CONF_NAME}}_paper.pdf" class="u-active-none u-border-none u-btn u-button-link u-button-style u-file-link u-hover-none u-none u-text-black u-text-hover-palette-2-base u-btn-2" target="_blank">Manuscript</a>
                 <span style="font-style: italic;"> &nbsp; &nbsp; &nbsp;-&nbsp; &nbsp; &nbsp; <a href="files/{{CONF_NAME}}_slides.pdf" class="u-active-none u-border-none u-btn u-button-link u-button-style u-file-link u-hover-none u-none u-text-black u-text-hover-palette-2-base u-btn-3" target="_blank">Slides</a>
                 </span>
                 {{OPTIONAL_VIDEO_LINK}}
