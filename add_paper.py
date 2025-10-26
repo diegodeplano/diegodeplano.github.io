@@ -29,9 +29,19 @@ def add_paper():
         journal_url = input("Journal homepage URL (for image link): ").strip()
         img_src = input("Image filename (without .jpg, e.g., tacon): ").strip()
     elif is_arxiv:
-        arxiv_where = input("submitted to journal/conference ...: ").strip()
+        journal_name = input("Journal/conference name: ").strip()
+        round_num = input("Review round number (1, 2, 3, etc.) or blank if new: ").strip()
         year = input("Year: ").strip()
-        arxiv_info = f"Under review at {arxiv_where}, {year}"
+        if round_num:
+            # Convert number to ordinal (1->1st, 2->2nd, 3->3rd, etc.)
+            n = int(round_num)
+            if 10 <= n % 100 <= 20:
+                suffix = 'th'
+            else:
+                suffix = {1: 'st', 2: 'nd', 3: 'rd'}.get(n % 10, 'th')
+            arxiv_info = f"Under review at {journal_name} ({round_num}{suffix} round), {year}"
+        else:
+            arxiv_info = f"Under review at {journal_name}, {year}"
         doi_link = input("arXiv link or DOI: ").strip()
         journal_url = "arxiv.org"  # default arXiv link for image
         img_src = "ARXIV"  # assume there's an arxiv.jpg image
