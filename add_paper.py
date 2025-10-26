@@ -142,11 +142,11 @@ def add_paper():
         new_content = content[:insert_pos] + html + content[insert_pos:]
 
     elif is_arxiv:
-        # ArXiv preprint - uses journal format but adds to ARXIV PRE-PRINTS section
-        section_pattern = re.compile(r'<section class="u-clearfix u-palette-2-base u-section-category" id="section-category-arxiv">.*?<h1.*?ARXIV PRE-PRINTS</h1>.*?</section>', re.DOTALL)
+        # ArXiv preprint - uses journal format but adds to ARXIV PREPRINTS section
+        section_pattern = re.compile(r'<section class="u-clearfix u-palette-2-base u-section-category" id="section-category-arxiv">.*?<h1.*?ARXIV PREPRINTS</h1>.*?</section>', re.DOTALL)
         section_match = section_pattern.search(content)
         if not section_match:
-            print("ArXiv section not found. Please ensure ARXIV PRE-PRINTS section exists in Publications.html")
+            print("ArXiv section not found. Please ensure ARXIV PREPRINTS section exists in Publications.html")
             return
         insert_pos = section_match.end()
 
