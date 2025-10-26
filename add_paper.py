@@ -17,7 +17,7 @@ def add_paper():
     is_arxiv = paper_type.startswith('a')
     is_conference = paper_type.startswith('c')
 
-    paper_title = input("Paper title: ").strip().title()
+    paper_title = input("Paper title: ").strip().upper()
     authors = input("Authors (e.g., D. Deplano, M. Franceschelli): ").strip()
     # Underline "D. Deplano" as per C1-C16 style
     authors = authors.replace("D. Deplano", '<span style="text-decoration: underline !important;">D. Deplano</span>')
@@ -34,7 +34,7 @@ def add_paper():
         arxiv_info = f"Under review at {arxiv_where}, {year}"
         doi_link = input("arXiv link or DOI: ").strip()
         journal_url = "arxiv.org"  # default arXiv link for image
-        img_src = "arxiv"  # assume there's an arxiv.jpg image
+        img_src = "ARXIV"  # assume there's an arxiv.jpg image
     else:
         # Conference
         conf_name = input("Conference full name: ").strip()
