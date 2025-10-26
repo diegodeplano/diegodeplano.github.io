@@ -327,41 +327,42 @@
 
 /* End of the page */
 
-.u-section-1 .u-sheet-1 {
+.u-footer .u-sheet-1 {
   min-height: 667px;
 }
 
-.u-section-1 .u-text-1 {
+.u-footer .u-text-1 {
   font-size: 1.125rem;
   margin: 60px 0;
 }
 
 @media (max-width: 1199px) {
-  .u-section-1 .u-text-1 {
+  .u-footer .u-text-1 {
     font-size: 1rem;
   }
 }
 
 @media (max-width: 991px) {
-  .u-section-1 .u-text-1 {
+  .u-footer .u-text-1 {
     font-size: 0.875rem;
   }
 }
 
 @media (max-width: 767px) {
-  .u-section-1 .u-text-1 {
+  .u-footer .u-text-1 {
     font-size: 0.75rem;
   }
 }
 
 @media (max-width: 575px) {
-  .u-section-1 .u-sheet-1 {
+  .u-footer .u-sheet-1 {
     min-height: 742px;
   }
 
-  .u-section-1 .u-text-1 {
+  .u-footer .u-text-1 {
     width: auto;
     margin-top: 35px;
     margin-bottom: 35px;
   }
 }
+
