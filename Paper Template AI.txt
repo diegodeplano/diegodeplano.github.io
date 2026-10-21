@@ -1,3 +1,4 @@
+<!-- OUTDATED (October 2026): use add_paper.py instead; it generates the current entry format. -->
 <!-- ==================================
 TEMPLATES FOR ADDING NEW PAPERS TO Publications.html
 

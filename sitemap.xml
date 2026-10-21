@@ -1,177 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset
-      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
-
-
-<url>
-  <loc>https://diegodeplano.github.io/</loc>
-  <lastmod>2024-04-26T21:46:15+00:00</lastmod>
-  <priority>1.00</priority>
-</url>
-<url>
-  <loc>https://diegodeplano.github.io/Home.html</loc>
-  <lastmod>2024-04-26T21:46:15+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://diegodeplano.github.io/Biography.html</loc>
-  <lastmod>2024-04-26T21:46:15+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://diegodeplano.github.io/Publications.html</loc>
-  <lastmod>2024-04-26T21:46:15+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://diegodeplano.github.io/Projects.html</loc>
-  <lastmod>2024-04-26T21:46:15+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://diegodeplano.github.io/files/Curriculum_Vitae_Deplano_2404.pdf</loc>
-  <lastmod>2024-04-26T21:46:15+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://diegodeplano.github.io/files/tesididottorato_diegodeplano.pdf</loc>
-  <lastmod>2024-04-26T21:46:15+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://diegodeplano.github.io/files/Abstract_Thesis_Deplano.pdf</loc>
-  <lastmod>2024-04-26T21:46:15+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://diegodeplano.github.io/files/Online_Learning.pdf</loc>
-  <lastmod>2024-04-26T21:46:15+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://diegodeplano.github.io/files/K-Topical-TAC23.pdf</loc>
-  <lastmod>2024-04-26T21:46:15+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://diegodeplano.github.io/files/TypeK_Consensus_TAC23-Presentation.pdf</loc>
-  <lastmod>2024-04-26T21:46:15+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://diegodeplano.github.io/files/Dynamic_minmax_Deplano.pdf</loc>
-  <lastmod>2024-04-26T21:46:15+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://diegodeplano.github.io/files/2021_L-CSS_Sliding.pdf</loc>
-  <lastmod>2024-04-26T21:46:15+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://diegodeplano.github.io/files/2021_L-CSS_Sliding_Presentation.pdf</loc>
-  <lastmod>2024-04-26T21:46:15+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://diegodeplano.github.io/files/2019_AUTOMATICA.pdf</loc>
-  <lastmod>2024-04-26T21:46:15+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://diegodeplano.github.io/files/2020_ACCESS.pdf</loc>
-  <lastmod>2024-04-26T21:46:15+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://diegodeplano.github.io/files/2020_L-CSS.pdf</loc>
-  <lastmod>2024-04-26T21:46:15+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://diegodeplano.github.io/files/2020_L-CSS_Presentation.pdf</loc>
-  <lastmod>2024-04-26T21:46:15+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://diegodeplano.github.io/files/2019_L-CSS.pdf</loc>
-  <lastmod>2024-04-26T21:46:15+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://diegodeplano.github.io/files/2019_L-CSS_PRESENTATION.pdf</loc>
-  <lastmod>2024-04-26T21:46:15+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://diegodeplano.github.io/files/CDC23_Paper.pdf</loc>
-  <lastmod>2024-04-26T21:46:15+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://diegodeplano.github.io/files/CDC23_Slides.pdf</loc>
-  <lastmod>2024-04-26T21:46:15+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://diegodeplano.github.io/files/IFAC23-spectrum.pdf</loc>
-  <lastmod>2024-04-26T21:46:15+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://diegodeplano.github.io/files/IFAC23-spectrum-presentation.pdf</loc>
-  <lastmod>2024-04-26T21:46:15+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://diegodeplano.github.io/files/NECSYS-dynmax.pdf</loc>
-  <lastmod>2024-04-26T21:46:15+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://diegodeplano.github.io/files/NECSYS-dynmax-presentation.pdf</loc>
-  <lastmod>2024-04-26T21:46:15+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://diegodeplano.github.io/files/CDC23_k-regular-graphs.pdf</loc>
-  <lastmod>2024-04-26T21:46:15+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://diegodeplano.github.io/files/CDC23_k-regular-presentation.pdf</loc>
-  <lastmod>2024-04-26T21:46:15+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://diegodeplano.github.io/files/CDC_2021_Distributed_parameter_tracking.pdf</loc>
-  <lastmod>2024-04-26T21:46:15+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://diegodeplano.github.io/files/CDC_2021___Dynamic_diameter_final.pdf</loc>
-  <lastmod>2024-04-26T21:46:15+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://diegodeplano.github.io/files/2019_ACD.pdf</loc>
-  <lastmod>2024-04-26T21:46:15+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://diegodeplano.github.io/files/2018_CDC.pdf</loc>
-  <lastmod>2024-04-26T21:46:15+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://diegodeplano.github.io/files/2017_ICCA.pdf</loc>
-  <lastmod>2024-04-26T21:46:15+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-
-
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://diegodeplano.github.io/</loc><lastmod>2026-10-21</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/Biography.html</loc><lastmod>2026-10-21</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/Publications.html</loc><lastmod>2026-10-21</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/Teachings.html</loc><lastmod>2026-10-21</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/Curriculum_Vitae_Deplano_2610.pdf</loc><lastmod>2026-10-21</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/tesididottorato_diegodeplano.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/Abstract_Thesis_Deplano.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/ARXIV%20-%20ENRICHED%20-%20Manuscript.pdf</loc><lastmod>2025-10-26</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/ARXIV%20-%20ENRICHED%20-%20Slides.pdf</loc><lastmod>2025-10-26</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/ARXIV%20-%20RANDREG%20-%20Manuscript.pdf</loc><lastmod>2025-10-26</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/ARXIV%20-%20OL%20OPEN%20-%20Manuscript.pdf</loc><lastmod>2025-10-26</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/ARXIV%20-%20OL%20OPEN%20-%20Poster.pdf</loc><lastmod>2025-10-26</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/TAC25%20-%20TRACK%20-%20Manuscript.pdf</loc><lastmod>2025-10-25</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/2025_TAC.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/CDC24%20-%20NN%20-%20Manuscript.pdf</loc><lastmod>2025-10-25</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/CDC24%20-%20NN%20-%20Slides.pdf</loc><lastmod>2025-10-25</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/K-Topical-TAC23.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/TypeK_Consensus_TAC23-Presentation.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/Dynamic_minmax_Deplano.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/Seminar_DIEE_Max_Consensus.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/2021_L-CSS_Sliding.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/2021_L-CSS_Sliding_Presentation.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/2020_L-CSS.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/2020_L-CSS_Presentation.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/2019_AUTOMATICA.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/2020_ACCESS.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/2019_L-CSS.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/2019_L-CSS_PRESENTATION.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/CASE25%20-%20Manuscript.pdf</loc><lastmod>2025-10-25</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/CASE25%20-%20Slides.pdf</loc><lastmod>2025-10-25</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/ECC25%20-%20Manuscript.pdf</loc><lastmod>2025-10-25</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/ECC25%20-%20Slides.pdf</loc><lastmod>2025-10-25</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/NECSYS25%20-%20Manuscript.pdf</loc><lastmod>2025-10-25</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/NECSYS25%20-%20Poster.pdf</loc><lastmod>2025-10-25</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/CDC24%20-%20OPEN%20-%20Manuscript.pdf</loc><lastmod>2025-10-25</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/CDC24%20-%20OPEN%20-%20Slides.pdf</loc><lastmod>2025-10-25</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/CASE24%20-%20DEDEM%20-%20Manuscript.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/CASE24%20-%20DEDEM%20-%20Slides.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/CASE24%20-%20SELF%20-%20Manuscript.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/CASE24%20-%20SELF%20-%20Slides.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/CASE24%20-%20BESS%20-%20Manuscript.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/CASE24%20-%20BESS%20-%20Slides.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/CASE24%20-%20Distopt%20-%20Manuscript.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/CASE24%20-%20Distopt%20-%20Slides.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/CDC23_Paper.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/CDC23_Slides.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/IFAC23-spectrum.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/IFAC23-spectrum-presentation.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/CODIT23%20-%20Slides.pdf</loc><lastmod>2025-10-26</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/CDC23_k-regular-graphs.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/CDC23_k-regular-presentation.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/NECSYS-dynmax.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/NECSYS-dynmax-presentation.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/2019_ACD.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/2019_ACD_PRESENTATION.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/CDC_2021_Distributed_parameter_tracking.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/CDC_2021___Dynamic_diameter_final.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/2018_CDC.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/2018_CDC_PRESENTATION.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/2017_ICCA.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/ICCA17_Diego.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/ESmatlab_EAS.pdf</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/sol_ESmatlab_EAS.m</loc><lastmod>2025-10-24</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/Laboratory.pdf</loc><lastmod>2026-05-19</lastmod></url>
+  <url><loc>https://diegodeplano.github.io/files/Template%20-%20Exercises.zip</loc><lastmod>2026-05-19</lastmod></url>
 </urlset>
