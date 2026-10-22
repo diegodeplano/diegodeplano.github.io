@@ -149,11 +149,22 @@ img { max-width: 100%; }
 .pub-title a { color: #000000; text-decoration: none; }
 .pub-info { margin-top: 10px; font-size: 1.125rem; line-height: 2.2; }
 .pub-info .me { text-decoration: underline; }
-.pub-info .mat a, .phd .mat a, .course-body a { color: #000000; font-style: italic; text-decoration: none; }
-.pub-info .mat .sep, .phd .mat .sep, .course-body .sep { margin: 0 0.9em; }
-.pub-info .mat a:first-of-type, .phd .mat a:first-of-type { margin-left: 1.4em; }
+.course-body a { color: #000000; font-style: italic; text-decoration: none; }
+.course-body .sep { margin: 0 0.9em; }
+/* material links rendered as buttons: side by side, wrapping to the left edge */
+.pub-info .mat, .phd .mat { display: flex; flex-wrap: wrap; gap: 0.5em; margin: 0.3em 0; }
+.pub-info .mat a, .phd .mat a, .mat .bib-btn {
+  display: inline-block; padding: 0.15em 0.85em;
+  font-size: 0.95rem; line-height: 1.6; color: var(--accent); text-decoration: none;
+  border: 1px solid var(--accent); border-radius: 4px; background: #ffffff;
+  transition: background-color 0.15s, color 0.15s;
+}
+.pub-info .mat a:hover, .pub-info .mat a:focus-visible,
+.phd .mat a:hover, .phd .mat a:focus-visible { background: var(--accent); color: #ffffff; }
+.mat .bib-btn { font-family: inherit; cursor: pointer; background: var(--accent); color: #ffffff; }
+.mat .bib-btn:hover, .mat .bib-btn:focus-visible { background: #b8383e; border-color: #b8383e; }
 .pub-info .xref { color: inherit; text-decoration: underline; }
-.pub-title a:hover, .pub-info .mat a:hover, .phd .mat a:hover, .course-body a:hover, .pub-info .xref:hover { color: var(--accent); }
+.pub-title a:hover, .course-body a:hover, .pub-info .xref:hover { color: var(--accent); }
 .pub-logo { padding: 30px 0; }
 .pub-logo img { display: block; width: 100%; height: auto; aspect-ratio: 190 / 105; object-fit: cover; }
 
@@ -289,3 +300,26 @@ img { max-width: 100%; }
   .pub { grid-template-columns: minmax(0, 7fr) minmax(0, 52fr) minmax(0, 1fr); }
   .course-body p { margin: 30px 0; }
 }
+
+/* BibTeX popup */
+.bib-dialog {
+  width: min(640px, calc(100% - 32px)); max-width: none; padding: 24px; border: 0; border-radius: 12px;
+  color: var(--text); background: #ffffff; box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+}
+.bib-dialog::backdrop { background: rgba(0, 0, 0, 0.45); }
+.bib-dialog-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.bib-dialog h2 { margin: 0; font-size: 1.25rem; }
+.bib-close { padding: 0 6px; font-size: 1.6rem; line-height: 1; color: #555555; background: none; border: 0; cursor: pointer; }
+.bib-close:hover { color: var(--accent); }
+.bib-dialog pre {
+  max-height: 60vh; margin: 0 0 20px; padding: 16px; overflow: auto;
+  font-family: Consolas, Menlo, monospace; font-size: 0.875rem; line-height: 1.6;
+  white-space: pre-wrap; overflow-wrap: anywhere;
+  background: #f5f5f7; border: 1px solid #e3e3e3; border-radius: 8px;
+}
+.bib-dialog pre:focus { outline: none; }
+.bib-copy {
+  padding: 0.6em 1.2em; font-family: inherit; font-size: 1rem; font-weight: 700; color: #ffffff;
+  background: var(--accent); border: 0; border-radius: 6px; cursor: pointer;
+}
+.bib-copy:hover, .bib-copy:focus-visible { background: #b8383e; }
