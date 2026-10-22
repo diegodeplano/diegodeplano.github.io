@@ -9,6 +9,8 @@ before running, so the script can check that the links will work.
 
 When the paper has a link (DOI, IEEE Xplore, publisher page or arXiv), its BibTeX
 entry is downloaded from Crossref or arXiv and shown behind a "BibTeX" button.
+Each paper also records its year and a short venue name (e.g. TAC, CDC), which the
+filter menus of the page are built from.
 """
 import html
 import json
@@ -233,16 +235,19 @@ def render_xref(note, label):
 
 
 def render_paper(label, title, url, authors, venue, materials, logo, logo_alt, logo_href=None, xref=None,
-                 bibtex=None):
+                 bibtex=None, year=None, venue_tag=None):
     """HTML for one publication followed by its divider line. label is e.g. 'J11'.
 
     url can be None for accepted papers without a DOI yet: the title is then shown without a link.
+    year and venue_tag (e.g. 'CDC') feed the filter menus; arXiv preprints have no venue_tag.
     """
     title_html = f'<a href="{html.escape(url)}" target="_blank">{html.escape(title)}</a>' if url else html.escape(title)
     img = f'<img src="images/{logo}" alt="{html.escape(logo_alt)}" loading="lazy">'
     logo_html = f'<a href="{html.escape(logo_href)}" target="_blank">{img}</a>' if logo_href else img
     venue_html = html.escape(venue) + (render_xref(*xref) if xref else '')
-    return f'''    <article class="pub container" id="section-{label}">
+    data = (f' data-year="{html.escape(year)}"' if year else '') + \
+           (f' data-venue="{html.escape(venue_tag)}"' if venue_tag else '')
+    return f'''    <article class="pub container" id="section-{label}"{data}>
       <div class="pub-label">[{label}]</div>
       <div class="pub-body">
         <h3 class="pub-title">{title_html}</h3>
@@ -267,6 +272,29 @@ def ask_yes(prompt):
     return ask(prompt + ' (y/n): ').lower().startswith('y')
 
 
+def venue_key(name):
+    """Venue name without ordinals and years, e.g. '66th IEEE ... (CDC)' matches '65th IEEE ... (CDC), 2026'."""
+    name = re.sub(r'\b\d+(st|nd|rd|th)\b|\b(19|20)\d\d\b', '', html.unescape(name))
+    return re.sub(r'[^a-z]', '', name.lower())
+
+
+def ask_venue_tag(name, content):
+    """Short venue name for the filter menus: the one already used on the page for the same venue,
+    otherwise the acronym in parentheses, e.g. 'CDC'; press Enter to accept the suggestion."""
+    known = {}
+    for tag, info in re.findall(r'<article class="pub container"[^>]*data-venue="([^"]*)"[^>]*>.*?'
+                                r'<p class="pub-info">(.*?)</p>', content, re.DOTALL):
+        venue = re.split(r'&ndash;|–', re.sub(r'<[^>]+>', '', info.split('<br>')[1]))[0]
+        known.setdefault(venue_key(venue), html.unescape(tag))
+    acronym = re.search(r'\(([A-Za-z][\w-]*)', name)
+    suggestion = known.get(venue_key(name)) or (acronym.group(1) if acronym else '')
+    tag = ask('Short venue name for the filter menu (e.g., TAC, L-CSS, CDC)'
+              + (f' [{suggestion}]' if suggestion else '') + ': ') or suggestion
+    if not tag:
+        print('  No venue name: the paper will not be listed in the Venue filter.')
+    return tag
+
+
 def add_paper():
     print("Add a paper to Diego Deplano's website.")
     kind = ask('Is this a (j)ournal paper, (c)onference paper, or (a)rxiv preprint? ').lower()[:1]
@@ -274,12 +302,16 @@ def add_paper():
         print('Invalid type. Exiting.')
         return
     prefix, category_id = CATEGORIES[kind]
+    content = PUB_FILE.read_text(encoding='utf-8')
 
     title = ask('Paper title: ')
     authors = ask('Authors (e.g., D. Deplano, M. Franceschelli): ')
+    venue_tag = None
     if kind == 'j':
         journal = ask('Journal name (e.g., IEEE Transactions on Automatic Control): ')
-        venue = f"{journal}, {ask('Year: ')}"  # volume and pages are only in the BibTeX entry
+        venue_tag = ask_venue_tag(journal, content)
+        year = ask('Year: ')
+        venue = f'{journal}, {year}'  # volume and pages are only in the BibTeX entry
         url = full_url(ask('DOI or IEEE Xplore link (blank if not yet available): '))
         logo_href = full_url(ask('Journal homepage URL (logo link): '))
         logo_alt = journal
@@ -294,7 +326,9 @@ def add_paper():
         logo_href, logo_alt, logo = 'https://arxiv.org', 'arXiv', 'ARXIV.jpg'
     else:
         conference = ask('Conference full name (e.g., 66th IEEE Conference on Decision and Control (CDC)): ')
-        venue = f"{conference}, {ask('Year: ')}"
+        venue_tag = ask_venue_tag(conference, content)
+        year = ask('Year: ')
+        venue = f'{conference}, {year}'
         url = full_url(ask('IEEE Xplore (or publisher) link (blank if not yet available): '))
         logo_href = full_url(ask('Conference homepage URL (logo link, blank for none): '))
         logo_alt = ask('Short conference name for the logo (e.g., IEEE CDC 2027): ')
@@ -315,7 +349,6 @@ def add_paper():
     if ask_yes('Do you have a video link?'):
         links.append(('Video', full_url(ask('Video link (e.g., https://youtu.be/...): ')), False))
 
-    content = PUB_FILE.read_text(encoding='utf-8')
     header = re.search(rf'<section[^>]*id="{category_id}"[^>]*>.*?</section>\n?', content, re.DOTALL)
     if not header:
         print(f'Category banner id="{category_id}" not found in Publications.html. Exiting.')
@@ -338,7 +371,7 @@ def add_paper():
             print('  No BibTeX entry found for this link: the paper is added without the BibTeX button.')
 
     entry = render_paper(label, title, url or None, authors, venue, links, logo, logo_alt, logo_href or None,
-                         bibtex=bibtex)
+                         bibtex=bibtex, year=year, venue_tag=venue_tag)
     PUB_FILE.write_text(content[:header.end()] + entry + content[header.end():], encoding='utf-8')
 
     print(f'Paper added as [{label}].')

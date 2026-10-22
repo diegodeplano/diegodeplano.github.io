@@ -172,6 +172,8 @@ img { max-width: 100%; }
 @media (min-width: 1200px) {
   .pub-sep.container { width: 1200px; }  /* the divider is 30px wider than the text on each side */
 }
+/* papers, banners and dividers hidden by the publication filters */
+.pub[hidden], .banner[hidden], .pub-sep[hidden] { display: none; }
 
 /* ---------------------------------------------------------------- teachings */
 .course-body .container { min-height: 105px; }
@@ -323,3 +325,50 @@ img { max-width: 100%; }
   background: var(--accent); border: 0; border-radius: 6px; cursor: pointer;
 }
 .bib-copy:hover, .bib-copy:focus-visible { background: #b8383e; }
+
+/* Publication filters: dropdown menus side by side (built by site.js) */
+.pub-filter { background: var(--light-bg); }
+.filter-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; padding: 18px 0; }
+.filter-title { margin-right: 6px; font-family: Roboto, sans-serif; font-weight: 700; font-size: 1.125rem; }
+.filter-dd { position: relative; }
+.filter-dd summary {
+  display: flex; align-items: center; gap: 0.4em; min-width: 150px; padding: 0.4em 0.8em;
+  font-size: 0.95rem; line-height: 1.6; list-style: none; cursor: pointer; user-select: none;
+  background: #ffffff; border: 1px solid #c8c8c8; border-radius: 6px;
+}
+.filter-dd summary::-webkit-details-marker { display: none; }
+.filter-dd summary::after {  /* chevron */
+  content: ''; flex: none; width: 0.45em; height: 0.45em; margin: -0.2em 0 0 auto;
+  border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg);
+}
+.filter-dd[open] summary::after { margin-top: 0.25em; transform: rotate(-135deg); }
+.filter-dd summary:hover, .filter-dd[open] summary { border-color: var(--accent); }
+.filter-dd.is-active summary { color: var(--accent); border-color: var(--accent); }
+.filter-name { font-weight: 700; }
+.filter-value { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.filter-menu {
+  position: absolute; top: calc(100% + 6px); left: 0; z-index: 5; min-width: 100%; max-height: 60vh; overflow: auto;
+  padding: 6px 0; background: #ffffff; border: 1px solid #e3e3e3; border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+.filter-group {
+  padding: 8px 14px 2px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em;
+  text-transform: uppercase; white-space: nowrap; color: #777777;
+}
+.filter-option { display: flex; align-items: center; gap: 0.6em; padding: 5px 14px; font-size: 0.95rem; white-space: nowrap; cursor: pointer; }
+.filter-option:hover { background: #f5f5f7; }
+.filter-option input { margin: 0; accent-color: var(--accent); cursor: inherit; }
+.filter-option .count { margin-left: auto; padding-left: 1.5em; font-size: 0.85rem; color: #888888; }
+.filter-option.is-empty { color: #b0b0b0; cursor: default; }
+.filter-option.is-empty:hover { background: none; }
+.filter-status { display: flex; align-items: center; gap: 14px; margin-left: auto; font-size: 0.95rem; color: #555555; }
+.filter-reset { padding: 0; font: inherit; color: var(--accent); background: none; border: 0; text-decoration: underline; cursor: pointer; }
+.filter-empty { margin: 0; padding: 0 0 30px; font-size: 1.125rem; color: #555555; }
+@media (max-width: 575px) {
+  .filter-bar { column-gap: 8px; }
+  .filter-title { flex-basis: 100%; }
+  .filter-dd { flex: 1 1 0; min-width: 0; }
+  .filter-dd summary { gap: 0.3em; min-width: 0; padding: 0.4em 0.5em; font-size: 0.875rem; }
+  .filter-dd:last-of-type .filter-menu { left: auto; right: 0; }
+  .filter-status { flex-basis: 100%; justify-content: space-between; margin-left: 0; }
+}

@@ -75,3 +75,155 @@
     if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) dialog.close();
   });
 })();
+
+// Publication filters: dropdown menus (type, year, venue) built from the papers on the page.
+// Choices in the same menu add up, choices in different menus narrow the list down;
+// category banners and dividers are hidden along with their papers.
+(function () {
+  var panel = document.getElementById('pub-filter');
+  if (!panel) return;
+
+  function el(tag, cls, text) {
+    var node = document.createElement(tag);
+    if (cls) node.className = cls;
+    if (text !== undefined) node.textContent = text;
+    return node;
+  }
+  function countBy(list, key) {
+    var counts = {};
+    list.forEach(function (x) { var k = key(x); if (k) counts[k] = (counts[k] || 0) + 1; });
+    return counts;
+  }
+
+  // papers grouped under their category banner, in page order
+  var groups = [], papers = [], group = null;
+  Array.prototype.forEach.call(panel.parentNode.children, function (node) {
+    if (node.classList.contains('banner')) {
+      var title = node.textContent.trim();  // e.g. "Journal Articles", shown in the menus as "Journal"
+      group = { el: node, id: node.id, label: title, short: title.split(' ')[0], papers: [] };
+      groups.push(group);
+    } else if (node.classList.contains('pub') && group) {
+      var paper = { el: node, group: group, year: node.getAttribute('data-year') || '', venue: node.getAttribute('data-venue') || '' };
+      group.papers.push(paper);
+      papers.push(paper);
+    }
+  });
+  if (!papers.length) return;
+
+  var dims = [
+    { name: 'Type', of: function (p) { return p.group.id; },
+      options: groups.map(function (g) { return { value: g.id, label: g.short }; }) },
+    { name: 'Year', of: function (p) { return p.year; },
+      options: Object.keys(countBy(papers, function (p) { return p.year; })).sort().reverse()
+        .map(function (y) { return { value: y, label: y }; }) },
+    { name: 'Venue', of: function (p) { return p.venue; }, options: [] }
+  ];
+  groups.forEach(function (g) {  // venues listed under their category, most frequent first
+    var counts = countBy(g.papers, function (p) { return p.venue; });
+    var venues = Object.keys(counts).sort(function (a, b) { return counts[b] - counts[a] || a.localeCompare(b); });
+    if (!venues.length) return;
+    dims[2].options.push({ heading: g.label });
+    venues.forEach(function (v) { dims[2].options.push({ value: v, label: v }); });
+  });
+
+  var bar = el('div', 'filter-bar');
+  bar.appendChild(el('span', 'filter-title', 'Filter publications'));
+  dims.forEach(function (dim) {
+    dim.dd = el('details', 'filter-dd');
+    var summary = dim.dd.appendChild(el('summary'));
+    summary.appendChild(el('span', 'filter-name', dim.name + ':'));
+    dim.valueEl = summary.appendChild(el('span', 'filter-value'));
+    var menu = dim.dd.appendChild(el('div', 'filter-menu'));
+    dim.options.forEach(function (opt) {
+      if (opt.heading) { menu.appendChild(el('div', 'filter-group', opt.heading)); return; }
+      opt.row = menu.appendChild(el('label', 'filter-option'));
+      opt.input = opt.row.appendChild(el('input'));
+      opt.input.type = 'checkbox';
+      opt.input.addEventListener('change', update);
+      opt.row.appendChild(el('span', '', opt.label));
+      opt.countEl = opt.row.appendChild(el('span', 'count'));
+    });
+    dim.choices = dim.options.filter(function (opt) { return opt.input; });
+    dim.dd.addEventListener('toggle', function () {  // one menu open at a time
+      if (dim.dd.open) dims.forEach(function (d) { if (d !== dim) d.dd.open = false; });
+    });
+    bar.appendChild(dim.dd);
+  });
+  var status = bar.appendChild(el('div', 'filter-status'));
+  var countEl = status.appendChild(el('span', 'filter-count'));
+  countEl.setAttribute('aria-live', 'polite');
+  var resetBtn = status.appendChild(el('button', 'filter-reset', 'Reset'));
+  resetBtn.type = 'button';
+  var empty = el('p', 'filter-empty', 'No publications match the selected filters.');
+  var container = panel.querySelector('.container');
+  container.appendChild(bar);
+  container.appendChild(empty);
+  panel.hidden = false;
+
+  function selected(dim) {
+    return dim.choices.filter(function (o) { return o.input.checked; });
+  }
+  function matches(paper, skip) {
+    return dims.every(function (dim) {
+      if (dim === skip) return true;
+      var sel = selected(dim);
+      return !sel.length || sel.some(function (o) { return o.value === dim.of(paper); });
+    });
+  }
+
+  function update() {
+    var shown = 0;
+    papers.forEach(function (p) {
+      p.el.hidden = !matches(p);
+      if (!p.el.hidden) shown++;
+    });
+    groups.forEach(function (g) {  // a divider only between two visible papers of the same category
+      var seen = false;
+      g.papers.forEach(function (p) {
+        var line = p.el.previousElementSibling;
+        if (line && line.classList.contains('pub-sep')) line.hidden = p.el.hidden || !seen;
+        if (!p.el.hidden) seen = true;
+      });
+      g.el.hidden = !seen;
+    });
+    dims.forEach(function (dim) {  // counts given the other menus' choices
+      var pool = papers.filter(function (p) { return matches(p, dim); });
+      dim.choices.forEach(function (opt) {
+        var n = pool.filter(function (p) { return dim.of(p) === opt.value; }).length;
+        opt.countEl.textContent = n;
+        opt.input.disabled = !n && !opt.input.checked;
+        opt.row.classList.toggle('is-empty', !n);
+      });
+      var labels = selected(dim).map(function (o) { return o.label; });
+      var text = labels.join(', ');
+      dim.valueEl.textContent = !labels.length ? 'All' : labels.length > 1 && text.length > 20 ? labels.length + ' selected' : text;
+      dim.dd.classList.toggle('is-active', labels.length > 0);
+    });
+    var active = dims.some(function (dim) { return selected(dim).length; });
+    countEl.textContent = active ? 'Showing ' + shown + ' of ' + papers.length + ' publications' : papers.length + ' publications';
+    resetBtn.hidden = !active;
+    empty.hidden = shown > 0;
+  }
+
+  function reset() {
+    dims.forEach(function (dim) { dim.choices.forEach(function (o) { o.input.checked = false; }); });
+    update();
+  }
+  resetBtn.addEventListener('click', reset);
+
+  document.addEventListener('click', function (e) {
+    dims.forEach(function (d) { if (d.dd.open && !d.dd.contains(e.target)) d.dd.open = false; });
+    // a cross-reference such as "see [C28]" to a hidden paper clears the filters first
+    var link = e.target.closest && e.target.closest('a.xref');
+    var target = link && document.getElementById(link.getAttribute('href').slice(1));
+    if (target && target.hidden) reset();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    dims.forEach(function (d) {
+      if (d.dd.open) { d.dd.open = false; d.dd.querySelector('summary').focus(); }
+    });
+  });
+
+  update();
+})();
