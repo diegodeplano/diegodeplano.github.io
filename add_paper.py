@@ -279,7 +279,7 @@ def add_paper():
     authors = ask('Authors (e.g., D. Deplano, M. Franceschelli): ')
     if kind == 'j':
         journal = ask('Journal name (e.g., IEEE Transactions on Automatic Control): ')
-        venue = f"{journal}, {ask('Year (and volume/pages if known): ')}"
+        venue = f"{journal}, {ask('Year: ')}"  # volume and pages are only in the BibTeX entry
         url = full_url(ask('DOI or IEEE Xplore link (blank if not yet available): '))
         logo_href = full_url(ask('Journal homepage URL (logo link): '))
         logo_alt = journal
@@ -294,7 +294,7 @@ def add_paper():
         logo_href, logo_alt, logo = 'https://arxiv.org', 'arXiv', 'ARXIV.jpg'
     else:
         conference = ask('Conference full name (e.g., 66th IEEE Conference on Decision and Control (CDC)): ')
-        venue = f"{conference}, {ask('Year (and pages if known): ')}"
+        venue = f"{conference}, {ask('Year: ')}"
         url = full_url(ask('IEEE Xplore (or publisher) link (blank if not yet available): '))
         logo_href = full_url(ask('Conference homepage URL (logo link, blank for none): '))
         logo_alt = ask('Short conference name for the logo (e.g., IEEE CDC 2027): ')
