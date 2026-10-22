@@ -1,0 +1,291 @@
+/* Diego Deplano's website: single stylesheet.
+   Breakpoints (same as the original template): xl >= 1200, lg 992-1199, md 768-991, sm 576-767, xs <= 575. */
+
+:root {
+  --accent: #db545a;
+  --dark: #333333;
+  --text: #111111;
+  --light-bg: #f2f2f2;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { font-size: 16px; }
+
+body {
+  margin: 0;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text);
+  background: #ffffff;
+}
+
+h1, h2, h3, h4 { margin: 0; font-weight: 400; }
+p { margin: 0; }
+img { max-width: 100%; }
+
+.container { width: 1140px; margin-left: auto; margin-right: auto; }
+/* keep the margins of headings/paragraphs inside their coloured sections */
+.site-footer, .bio .container, .phd .container, .course-body .container { display: flow-root; }
+
+/* ---------------------------------------------------------------- header and menu */
+.site-header { background: var(--dark); color: #ffffff; position: relative; z-index: 10; }
+.header-inner { display: flex; align-items: center; min-height: 77px; }
+
+.site-title {
+  margin-left: 21px;
+  font-family: Oswald, sans-serif;
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.site-nav { margin-left: auto; }
+.site-nav ul { display: flex; list-style: none; margin: 0; padding: 0; }
+.site-nav a {
+  display: block;
+  padding: 10px 20px;
+  font-size: 1rem;
+  line-height: 1;
+  color: #ffffff;
+  text-decoration: none;
+}
+.site-nav a:hover, .site-nav a[aria-current="page"] { color: var(--accent); }
+
+.menu-toggle, .menu-close, .nav-overlay { display: none; }
+
+/* ---------------------------------------------------------------- footer */
+.site-footer { background: var(--dark); color: #ffffff; text-align: center; }
+.site-footer p {
+  width: 417px;
+  max-width: calc(100% - 20px);
+  margin: 49px auto;
+  font-size: 0.875rem;
+  font-style: italic;
+}
+
+/* ---------------------------------------------------------------- home: photo and contacts */
+.hero { background: var(--light-bg); }
+.hero .container { display: grid; grid-template-columns: 1fr 862px; min-height: 464px; }
+
+.hero-photo { position: relative; width: 210px; height: 264px; margin: 108px 0 0 34px; }
+.hero-photo::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  border-radius: 30px;
+}
+.hero-photo img {
+  position: absolute;
+  left: -6px;
+  top: 14px;
+  width: 200px;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 30px;
+}
+
+.hero-text { padding: 60px 30px 15px 25px; }
+.hero h1 { font-family: Oswald, sans-serif; font-weight: 700; font-size: 3rem; line-height: 1.1; }
+.hero .role { margin-top: 17px; font-family: Roboto, sans-serif; font-weight: 700; font-size: 1.5rem; line-height: 1.2; }
+.hero .contacts { margin-top: 17px; font-size: 1.125rem; }
+.hero .contacts a { color: #000000; text-decoration: underline; }
+.hero .contacts a:hover { color: var(--accent); }
+.hero .contacts a.dept { color: var(--accent); font-weight: 700; }
+
+/* ---------------------------------------------------------------- home: research interests */
+.areas { background: var(--light-bg); }
+.areas .container { display: grid; grid-template-columns: 1fr 1fr; padding: 60px 0; min-height: 413px; }
+.areas .col { padding: 30px; text-align: center; }
+.areas h2 { font-family: Oswald, sans-serif; font-size: 2.25rem; line-height: 1.2; }
+.areas p { margin-top: 20px; font-size: 1.125rem; }
+
+/* ---------------------------------------------------------------- biography */
+.bio .container { min-height: 667px; }
+.bio p { margin: 60px 0; font-size: 1.125rem; }
+
+/* ---------------------------------------------------------------- red banners (publication categories, courses) */
+.banner { background: var(--accent); color: #ffffff; }
+.banner .container { display: flex; align-items: center; min-height: 92px; }
+.banner h2 {
+  margin: 20px 0;
+  font-family: Oswald, sans-serif;
+  font-size: 3rem;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+/* ---------------------------------------------------------------- publications */
+.phd .container { min-height: 344px; }
+.phd h2 { margin-top: 43px; font-family: Roboto, sans-serif; font-weight: 700; font-size: 1.5rem; line-height: 1.2; }
+.phd p { margin: 27px 0 43px; font-size: 1.125rem; }
+.phd .award { color: var(--accent); font-weight: 700; }
+
+.pub {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 47fr) minmax(0, 10fr);
+  min-height: 233px;
+  padding-top: 15px;
+}
+.pub-label {
+  padding: 30px 0;
+  text-align: center;
+  font-family: Oswald, sans-serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+.pub-body { padding: 30px; }
+.pub-title {
+  font-family: Oswald, sans-serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.pub-title a { color: #000000; text-decoration: none; }
+.pub-info { margin-top: 10px; font-size: 1.125rem; line-height: 2.2; }
+.pub-info .me { text-decoration: underline; }
+.pub-info .mat a, .phd .mat a, .course-body a { color: #000000; font-style: italic; text-decoration: none; }
+.pub-info .mat .sep, .phd .mat .sep, .course-body .sep { margin: 0 0.9em; }
+.pub-info .mat a:first-of-type, .phd .mat a:first-of-type { margin-left: 1.4em; }
+.pub-info .xref { color: inherit; text-decoration: underline; }
+.pub-title a:hover, .pub-info .mat a:hover, .phd .mat a:hover, .course-body a:hover, .pub-info .xref:hover { color: var(--accent); }
+.pub-logo { padding: 30px 0; }
+.pub-logo img { display: block; width: 100%; height: auto; aspect-ratio: 190 / 105; object-fit: cover; }
+
+.pub-sep { height: 3px; margin: 7px auto; border: 0; background: var(--accent); }
+@media (min-width: 1200px) {
+  .pub-sep.container { width: 1200px; }  /* the divider is 30px wider than the text on each side */
+}
+
+/* ---------------------------------------------------------------- teachings */
+.course-body .container { min-height: 105px; }
+.course-body p { margin: 38px 0; font-size: 1.125rem; }
+.course-body .label { margin-right: 1.2em; }
+
+/* ================================================================ lg: 992-1199 */
+@media (max-width: 1199px) {
+  .container { width: 940px; }
+  .hero .container { grid-template-columns: 1fr 653px; min-height: 483px; }
+  .hero-photo { margin-left: 30px; }
+  .hero-photo img { left: -2px; }
+  .hero h1 { font-size: 2.75rem; }
+  .hero .role { font-size: 1.375rem; }
+  .hero .contacts { font-size: 1rem; }
+  .areas .container { min-height: 396px; }
+  .areas h2 { font-size: 2.125rem; }
+  .areas p { font-size: 1rem; }
+  .bio p { font-size: 1rem; }
+  .banner h2 { margin: 15px 0; font-size: 2.75rem; }
+  .phd h2 { font-size: 1.375rem; }
+  .phd p { font-size: 1rem; }
+  .pub { min-height: 195px; }
+  .pub-label { font-size: 1.375rem; }
+  .pub-title { font-size: 1.375rem; }
+  .pub-info { font-size: 1rem; }
+  .course-body p { font-size: 1rem; }
+}
+
+/* ================================================================ md: 768-991 (menu becomes a side panel) */
+@media (max-width: 991px) {
+  .container { width: 720px; }
+  .header-inner { min-height: 76px; }
+
+  .menu-toggle {
+    display: block;
+    margin-left: auto;
+    padding: 4px 0;
+    border: 0;
+    background: none;
+    color: #ffffff;
+    cursor: pointer;
+  }
+  .menu-toggle svg { display: block; width: 24px; height: 24px; fill: currentColor; }
+  .menu-toggle:hover { color: var(--accent); }
+
+  .site-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 30;
+    width: 250px;
+    margin: 0;
+    padding-top: 80px;
+    background: rgba(0, 0, 0, 0.95);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    visibility: hidden;
+  }
+  .menu-open .site-nav { transform: none; visibility: visible; }
+  .site-nav ul { flex-direction: column; text-align: center; }
+  .site-nav a { padding: 10px 20px; font-size: 1.25rem; line-height: 1.6; }
+  .menu-close {
+    display: block;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    border: 0;
+    background: none;
+    color: #ffffff;
+    font-size: 2rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .menu-close:hover { color: var(--accent); }
+  .nav-overlay { position: fixed; inset: 0; z-index: 20; background: rgba(0, 0, 0, 0.7); }
+  .menu-open .nav-overlay { display: block; }
+
+  .hero .container { grid-template-columns: 1fr 441px; min-height: 493px; }
+  .hero h1 { font-size: 2.5rem; }
+  .hero .role { margin-top: 9px; font-size: 1.25rem; }
+  .hero .contacts { margin-top: 25px; }
+  .hero-text { padding-bottom: 30px; }
+  .areas .container { min-height: 423px; }
+  .areas h2 { font-size: 2rem; }
+  .banner .container { min-height: 85px; }
+  .banner h2 { margin: 21px 0; font-size: 2.5rem; }
+  .phd h2 { margin-top: 56px; font-size: 1.25rem; }
+  .phd p { margin: 28px 0 57px; }
+  .pub { min-height: 230px; padding-top: 14px; }
+  .pub-title { font-size: 1.25rem; }
+}
+
+/* ================================================================ sm: 576-767 (one column, photo on top) */
+@media (max-width: 767px) {
+  .container { width: 540px; }
+  .site-title { font-size: 1rem; }
+
+  .hero .container { display: flow-root; min-height: 0; padding-bottom: 40px; }
+  .hero-photo { width: 157px; height: 197px; margin: 30px auto 0; }
+  .hero-photo img { left: -3px; top: 9px; width: 150px; height: 188px; }
+  .hero-text { padding: 25px 10px 0; }
+  .hero h1 { font-size: 2.25rem; }
+  .hero .role { margin-top: 10px; font-size: 1.125rem; }
+
+  .areas .container { display: block; padding: 1px 0; min-height: 0; }
+  .areas .col { padding: 30px 10px 15px; }
+  .areas h2 { font-size: 1.875rem; }
+
+  .phd h2 { font-size: 1.125rem; }
+  .pub { grid-template-columns: minmax(0, 5fr) minmax(0, 54fr) minmax(0, 1fr); }
+  .pub-logo { display: none; }
+  .pub-info { line-height: 1.7; }
+}
+
+/* ================================================================ xs: <= 575 */
+@media (max-width: 575px) {
+  .container { width: min(340px, calc(100% - 20px)); }
+  .hero h1 { font-size: 2rem; }
+  .hero .role { font-size: 1rem; }
+  .areas h2 { font-size: 1.75rem; }
+  .bio .container { min-height: 0; }
+  .bio p { margin: 35px 0; }
+  .banner h2 { font-size: 1.875rem; }
+  .pub { grid-template-columns: minmax(0, 7fr) minmax(0, 52fr) minmax(0, 1fr); }
+  .course-body p { margin: 30px 0; }
+}
