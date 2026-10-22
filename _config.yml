@@ -1,8 +1,4 @@
 # GitHub Pages build settings.
 # These files stay in the repository but are not published on the website.
 exclude:
-  - blog
-  - Backups
-  - "Templates for papers"
-  - "Paper Template AI.txt"
   - add_paper.py
