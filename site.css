@@ -367,8 +367,8 @@ img { max-width: 100%; }
 @media (max-width: 575px) {
   .filter-bar { column-gap: 8px; }
   .filter-title { flex-basis: 100%; }
-  .filter-dd { flex: 1 1 0; min-width: 0; }
+  .filter-dd { flex: 1 1 calc(50% - 4px); min-width: 0; }  /* four menus on two rows */
   .filter-dd summary { gap: 0.3em; min-width: 0; padding: 0.4em 0.5em; font-size: 0.875rem; }
-  .filter-dd:last-of-type .filter-menu { left: auto; right: 0; }
+  .filter-dd:nth-of-type(even) .filter-menu { left: auto; right: 0; }
   .filter-status { flex-basis: 100%; justify-content: space-between; margin-left: 0; }
 }

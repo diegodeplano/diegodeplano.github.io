@@ -76,7 +76,7 @@
   });
 })();
 
-// Publication filters: dropdown menus (type, year, venue) built from the papers on the page.
+// Publication filters: dropdown menus (type, year, venue, co-author) built from the papers on the page.
 // Choices in the same menu add up, choices in different menus narrow the list down;
 // category banners and dividers are hidden along with their papers.
 (function () {
@@ -89,11 +89,22 @@
     if (text !== undefined) node.textContent = text;
     return node;
   }
-  function countBy(list, key) {
+  function countBy(list, key) {  // key may return one value or a list of values
     var counts = {};
-    list.forEach(function (x) { var k = key(x); if (k) counts[k] = (counts[k] || 0) + 1; });
+    list.forEach(function (x) {
+      [].concat(key(x)).forEach(function (k) { if (k) counts[k] = (counts[k] || 0) + 1; });
+    });
     return counts;
   }
+  function coauthors(node) {  // names before the first line break of the paper info, without D. Deplano
+    var info = node.querySelector('.pub-info');
+    if (!info) return [];
+    var first = document.createElement('div');
+    first.innerHTML = info.innerHTML.split(/<br\s*\/?>/i)[0];
+    return first.textContent.split(/,|\band\b/).map(function (s) { return s.trim(); })
+      .filter(function (s) { return s && !/Deplano/.test(s); });
+  }
+  function surname(name) { return name.split(/\s+/).pop(); }
 
   // papers grouped under their category banner, in page order
   var groups = [], papers = [], group = null;
@@ -103,7 +114,8 @@
       group = { el: node, id: node.id, label: title, short: title.split(' ')[0], papers: [] };
       groups.push(group);
     } else if (node.classList.contains('pub') && group) {
-      var paper = { el: node, group: group, year: node.getAttribute('data-year') || '', venue: node.getAttribute('data-venue') || '' };
+      var paper = { el: node, group: group, year: node.getAttribute('data-year') || '', venue: node.getAttribute('data-venue') || '',
+                    authors: coauthors(node) };
       group.papers.push(paper);
       papers.push(paper);
     }
@@ -116,8 +128,13 @@
     { name: 'Year', of: function (p) { return p.year; },
       options: Object.keys(countBy(papers, function (p) { return p.year; })).sort().reverse()
         .map(function (y) { return { value: y, label: y }; }) },
-    { name: 'Venue', of: function (p) { return p.venue; }, options: [] }
+    { name: 'Venue', of: function (p) { return p.venue; }, options: [] },
+    { name: 'Co-author', of: function (p) { return p.authors; }, options: [] }
   ];
+  var authorCounts = countBy(papers, function (p) { return p.authors; });  // most frequent co-authors first
+  dims[3].options = Object.keys(authorCounts).sort(function (a, b) {
+    return authorCounts[b] - authorCounts[a] || surname(a).localeCompare(surname(b));
+  }).map(function (name) { return { value: name, label: name }; });
   groups.forEach(function (g) {  // venues listed under their category, most frequent first
     var counts = countBy(g.papers, function (p) { return p.venue; });
     var venues = Object.keys(counts).sort(function (a, b) { return counts[b] - counts[a] || a.localeCompare(b); });
@@ -163,11 +180,14 @@
   function selected(dim) {
     return dim.choices.filter(function (o) { return o.input.checked; });
   }
+  function has(dim, paper, value) {  // a paper has one type/year/venue but several co-authors
+    return [].concat(dim.of(paper)).indexOf(value) >= 0;
+  }
   function matches(paper, skip) {
     return dims.every(function (dim) {
       if (dim === skip) return true;
       var sel = selected(dim);
-      return !sel.length || sel.some(function (o) { return o.value === dim.of(paper); });
+      return !sel.length || sel.some(function (o) { return has(dim, paper, o.value); });
     });
   }
 
@@ -189,7 +209,7 @@
     dims.forEach(function (dim) {  // counts given the other menus' choices
       var pool = papers.filter(function (p) { return matches(p, dim); });
       dim.choices.forEach(function (opt) {
-        var n = pool.filter(function (p) { return dim.of(p) === opt.value; }).length;
+        var n = pool.filter(function (p) { return has(dim, p, opt.value); }).length;
         opt.countEl.textContent = n;
         opt.input.disabled = !n && !opt.input.checked;
         opt.row.classList.toggle('is-empty', !n);
