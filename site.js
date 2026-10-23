@@ -1,3 +1,70 @@
+// Selected papers: slowly scan an overflowing row, until the visitor interacts.
+(function () {
+  var row = document.querySelector('.selected-list');
+  if (!row) return;
+  var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var visible = !('IntersectionObserver' in window);
+  var stopped = false;
+  var frame = 0, lastTime = 0, position = 0, direction = 1, limit = 0, pauseUntil = 0;
+  var speed = 24; // CSS pixels per second.
+
+  function tick(time) {
+    frame = 0;
+    if (lastTime && time >= pauseUntil) {
+      position += direction * speed * Math.min(time - lastTime, 50) / 1000;
+      if (position >= limit || position <= 0) {
+        position = Math.max(0, Math.min(position, limit));
+        direction *= -1;
+        pauseUntil = time + 1000;
+      }
+      row.scrollLeft = position;
+    }
+    lastTime = time;
+    frame = requestAnimationFrame(tick);
+  }
+
+  function update() {
+    limit = Math.max(0, row.scrollWidth - row.clientWidth);
+    if (limit > 1) row.setAttribute('tabindex', '0');
+    else row.removeAttribute('tabindex');
+    var running = limit > 1 && visible && !stopped && !document.hidden && !reducedMotion.matches;
+    if (!running) {
+      cancelAnimationFrame(frame);
+      frame = 0;
+      lastTime = 0;
+      row.classList.remove('is-auto-scrolling');
+      return;
+    }
+    if (frame) {
+      position = Math.min(position, limit);
+      return;
+    }
+    position = row.scrollLeft;
+    pauseUntil = performance.now() + 1200;
+    row.classList.add('is-auto-scrolling');
+    frame = requestAnimationFrame(tick);
+  }
+
+  function stop() {
+    stopped = true;
+    update();
+  }
+  ['pointerdown', 'touchstart', 'wheel', 'focusin', 'keydown'].forEach(function (event) {
+    row.addEventListener(event, stop, { passive: true });
+  });
+  document.addEventListener('visibilitychange', update);
+  reducedMotion.addEventListener('change', update);
+  if ('ResizeObserver' in window) new ResizeObserver(update).observe(row);
+  else window.addEventListener('resize', update);
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      visible = entries[0].isIntersecting;
+      update();
+    }, { threshold: 0 }).observe(row);
+  }
+  update();
+})();
+
 // Mobile menu: the navigation slides in from the left below 992px.
 (function () {
   var toggle = document.querySelector('.menu-toggle');

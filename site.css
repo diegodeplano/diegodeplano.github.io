@@ -114,6 +114,8 @@ img { max-width: 100%; }
 .all-publications { color: var(--dark); font-size: 0.95rem; text-underline-offset: 4px; }
 .all-publications:hover { color: #9f3036; }
 .selected-list { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: start; gap: 22px; }
+.selected-list.is-auto-scrolling { scroll-snap-type: none; scroll-behavior: auto; }
+.selected-list:focus-visible { outline: 3px solid #9f3036; outline-offset: 4px; }
 .selected-paper { min-width: 0; }
 .paper-preview { margin: 0; }
 .paper-thumbnail { display: block; aspect-ratio: 17 / 22; background: #f5f5f5; border: 1px solid #d8d8d8; box-shadow: 0 3px 9px #0000000a; transition: border-color 0.15s, box-shadow 0.15s; }
