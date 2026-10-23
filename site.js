@@ -79,6 +79,8 @@
 // Publication filters: dropdown menus (type, year, venue, co-author) built from the papers on the page.
 // Choices in the same menu add up, choices in different menus narrow the list down;
 // category banners and dividers are hidden along with their papers.
+// A conference entry that points to a journal entry ("published in IEEE L-CSS, see [J08]") is the same
+// paper listed twice: it is shown by the filters but left out of every count.
 (function () {
   var panel = document.getElementById('pub-filter');
   if (!panel) return;
@@ -115,7 +117,7 @@
       groups.push(group);
     } else if (node.classList.contains('pub') && group) {
       var paper = { el: node, group: group, year: node.getAttribute('data-year') || '', venue: node.getAttribute('data-venue') || '',
-                    authors: coauthors(node) };
+                    authors: coauthors(node), duplicate: !!node.querySelector('a.xref[href^="#section-J"]') };
       group.papers.push(paper);
       papers.push(paper);
     }
@@ -128,7 +130,7 @@
     { name: 'Year', of: function (p) { return p.year; },
       options: Object.keys(countBy(papers, function (p) { return p.year; })).sort().reverse()
         .map(function (y) { return { value: y, label: y }; }) },
-    { name: 'Venue', of: function (p) { return p.venue; }, options: [] },
+    { name: 'Published in', of: function (p) { return p.venue; }, options: [] },
     { name: 'Co-author', of: function (p) { return p.authors; }, options: [] }
   ];
   var authorCounts = countBy(papers, function (p) { return p.authors; });  // most frequent co-authors first
@@ -169,6 +171,7 @@
   var status = bar.appendChild(el('div', 'filter-status'));
   var countEl = status.appendChild(el('span', 'filter-count'));
   countEl.setAttribute('aria-live', 'polite');
+  countEl.title = 'IEEE L-CSS letters presented at the CDC appear in both lists but are counted once';
   var resetBtn = status.appendChild(el('button', 'filter-reset', 'Reset'));
   resetBtn.type = 'button';
   var empty = el('p', 'filter-empty', 'No publications match the selected filters.');
@@ -191,11 +194,13 @@
     });
   }
 
+  function counted(list) { return list.filter(function (p) { return !p.duplicate; }).length; }
+
   function update() {
-    var shown = 0;
+    var shown = 0, shownCounted = 0;
     papers.forEach(function (p) {
       p.el.hidden = !matches(p);
-      if (!p.el.hidden) shown++;
+      if (!p.el.hidden) { shown++; if (!p.duplicate) shownCounted++; }
     });
     groups.forEach(function (g) {  // a divider only between two visible papers of the same category
       var seen = false;
@@ -209,10 +214,10 @@
     dims.forEach(function (dim) {  // counts given the other menus' choices
       var pool = papers.filter(function (p) { return matches(p, dim); });
       dim.choices.forEach(function (opt) {
-        var n = pool.filter(function (p) { return has(dim, p, opt.value); }).length;
-        opt.countEl.textContent = n;
-        opt.input.disabled = !n && !opt.input.checked;
-        opt.row.classList.toggle('is-empty', !n);
+        var hits = pool.filter(function (p) { return has(dim, p, opt.value); });
+        opt.countEl.textContent = counted(hits);
+        opt.input.disabled = !hits.length && !opt.input.checked;
+        opt.row.classList.toggle('is-empty', !hits.length);
       });
       var labels = selected(dim).map(function (o) { return o.label; });
       var text = labels.join(', ');
@@ -220,7 +225,8 @@
       dim.dd.classList.toggle('is-active', labels.length > 0);
     });
     var active = dims.some(function (dim) { return selected(dim).length; });
-    countEl.textContent = active ? 'Showing ' + shown + ' of ' + papers.length + ' publications' : papers.length + ' publications';
+    var total = counted(papers);
+    countEl.textContent = active ? 'Showing ' + shownCounted + ' of ' + total + ' publications' : total + ' publications';
     resetBtn.hidden = !active;
     empty.hidden = shown > 0;
   }
