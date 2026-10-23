@@ -31,8 +31,9 @@ To choose different selected publications, change `SELECTED` in `sync_site.py`.
 Each selected entry needs a first-page PNG in `images/selected/`, and its
 thumbnail licence attribution must be kept in the homepage credits.
 
-`python add_paper.py` adds a publication interactively and synchronizes the home
-automatically. `python add_paper.py --relink` updates co-author links from
+`python add_paper.py` adds a publication interactively (BibTeX from Crossref/arXiv,
+abstract from OpenAlex/arXiv or pasted by hand) and synchronizes the home
+automatically. Abstracts are stored in each entry's `<template class="abstract">`. `python add_paper.py --relink` updates co-author links from
 `coauthors.json` and synchronizes the home as well.
 
 ## Update paper thumbnails
@@ -49,6 +50,13 @@ licences, so pages make no requests to Google. `404.html` is shown by GitHub
 Pages for any missing address; its links are absolute (`/site.css`) and a small
 script forwards the addresses of the old site (`Home.html`, `Projects.html`,
 `blog/`) to the current pages.
+
+## Weekly link check
+
+`.github/workflows/check-links.yml` checks every link of the pages each Monday
+(GitHub Actions, lychee). Broken links are reported in an issue labelled
+`broken links`, updated by later runs while it stays open: fix the links, then
+close the issue. It can also be started by hand from the Actions tab.
 
 ## Local preview
 
