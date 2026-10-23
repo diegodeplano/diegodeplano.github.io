@@ -107,6 +107,10 @@
       .filter(function (s) { return s && !/Deplano/.test(s); });
   }
   function surname(name) { return name.replace(/^([A-Z]\.\s*)+/, ''); }  // "Z.A.Z. Sanai Dashti" -> "Sanai Dashti"
+  function surnameFirst(name) {  // "Z.A.Z. Sanai Dashti" -> "Sanai Dashti, Z.A.Z."
+    var initials = name.slice(0, name.length - surname(name).length).trim();
+    return initials ? surname(name) + ', ' + initials : name;
+  }
   function alpha(a, b) { return a.localeCompare(b, undefined, { sensitivity: 'base' }); }
 
   // papers grouped under their category banner, in page order
@@ -125,7 +129,7 @@
   });
   if (!papers.length) return;
 
-  // menus in alphabetical order (years: newest first); categories alphabetical in every menu
+  // menus in alphabetical order (years: newest first; venues: journals, then conferences, as on the page)
   var sortedGroups = groups.slice().sort(function (a, b) { return alpha(a.short, b.short); });
   var dims = [
     { name: 'Type', of: function (p) { return p.group.id; },
@@ -139,8 +143,8 @@
   var authorCounts = countBy(papers, function (p) { return p.authors; });  // co-authors by surname
   dims[3].options = Object.keys(authorCounts).sort(function (a, b) {
     return alpha(surname(a), surname(b)) || alpha(a, b);
-  }).map(function (name) { return { value: name, label: name }; });
-  sortedGroups.forEach(function (g) {  // venues listed under their category, alphabetically
+  }).map(function (name) { return { value: name, label: surnameFirst(name) }; });
+  groups.forEach(function (g) {  // venues listed under their category, alphabetically
     var venues = Object.keys(countBy(g.papers, function (p) { return p.venue; })).sort(alpha);
     if (!venues.length) return;
     dims[2].options.push({ heading: g.label });
@@ -222,7 +226,7 @@
         opt.row.classList.toggle('is-empty', !hits.length);
       });
       var labels = selected(dim).map(function (o) { return o.label; });
-      var text = labels.join(', ');
+      var text = labels.join(labels.join('').indexOf(',') >= 0 ? '; ' : ', ');  // "Giua, A.; Seatzu, C."
       dim.valueEl.textContent = !labels.length ? 'All' : labels.length > 1 && text.length > 20 ? labels.length + ' selected' : text;
       dim.dd.classList.toggle('is-active', labels.length > 0);
     });
