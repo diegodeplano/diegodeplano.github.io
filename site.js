@@ -49,9 +49,53 @@
     stopped = true;
     update();
   }
-  ['pointerdown', 'touchstart', 'wheel', 'focusin', 'keydown'].forEach(function (event) {
-    row.addEventListener(event, stop, { passive: true });
+  var gesture = null;
+  var ignoreClick = false;
+
+  function classifyTouch(touch) {
+    if (!gesture || gesture.axis || !touch) return;
+    var dx = Math.abs(touch.clientX - gesture.x);
+    var dy = Math.abs(touch.clientY - gesture.y);
+    if (Math.max(dx, dy) < 10) return;
+    gesture.axis = dx > dy ? 'horizontal' : 'vertical';
+    ignoreClick = true;
+    if (gesture.axis === 'horizontal') stop();
+  }
+
+  // Wait for the direction of a touch gesture: a vertical page swipe is not a tap.
+  row.addEventListener('touchstart', function (event) {
+    ignoreClick = false;
+    var touch = event.touches.length === 1 && event.touches[0];
+    gesture = touch ? { x: touch.clientX, y: touch.clientY, axis: null } : null;
+  }, { passive: true });
+  row.addEventListener('touchmove', function (event) {
+    if (event.touches.length === 1) classifyTouch(event.touches[0]);
+    else { gesture = null; ignoreClick = true; }
+  }, { passive: true });
+  row.addEventListener('touchend', function (event) {
+    if (!gesture) return;
+    classifyTouch(event.changedTouches[0]);
+    if (!gesture.axis) stop();
+    gesture = null;
+  }, { passive: true });
+  row.addEventListener('touchcancel', function () {
+    gesture = null;
+    ignoreClick = true;
+  }, { passive: true });
+  row.addEventListener('pointerdown', function (event) {
+    if (event.pointerType === 'mouse') { ignoreClick = false; stop(); }
+  }, { passive: true });
+  row.addEventListener('click', function (event) {
+    if (!ignoreClick || event.detail === 0) stop();
   });
+  row.addEventListener('wheel', function (event) {
+    if (Math.abs(event.deltaX) > Math.max(1, Math.abs(event.deltaY)) ||
+        (event.shiftKey && Math.abs(event.deltaY) > 1)) stop();
+  }, { passive: true });
+  row.addEventListener('focusin', function (event) {
+    if (event.target.matches(':focus-visible')) stop();
+  });
+  row.addEventListener('keydown', stop);
   document.addEventListener('visibilitychange', update);
   reducedMotion.addEventListener('change', update);
   if ('ResizeObserver' in window) new ResizeObserver(update).observe(row);
