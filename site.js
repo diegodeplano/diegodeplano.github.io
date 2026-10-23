@@ -18,6 +18,15 @@
   });
 })();
 
+// Popups (BibTeX, PDF viewer) also close when the dark area around them is clicked.
+function closeOnBackdrop(dialog) {
+  dialog.addEventListener('click', function (e) {
+    if (e.target !== dialog) return;
+    var r = dialog.getBoundingClientRect();  // clicks on the dialog's own padding also target it
+    if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) dialog.close();
+  });
+}
+
 // BibTeX buttons: open a popup with the entry stored in the publication's <template class="bib">
 // and copy it to the clipboard right away.
 (function () {
@@ -69,11 +78,89 @@
 
   copyBtn.addEventListener('click', function () { copy(pre.textContent); });
   dialog.querySelector('.bib-close').addEventListener('click', function () { dialog.close(); });
-  dialog.addEventListener('click', function (e) {
-    if (e.target !== dialog) return;
-    var r = dialog.getBoundingClientRect();  // clicks on the dialog's own padding also target it
-    if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) dialog.close();
+  closeOnBackdrop(dialog);
+})();
+
+// Material popup: manuscripts, slides, posters (PDF) and talk videos open over the page instead of a new tab.
+// PDFs only where the browser shows them inline and there is a mouse: phones and tablets open the file as before.
+// Ctrl/Cmd/Shift-click or middle click still open the link in a new tab.
+function isPdf(href) { return /^[^:]+\.pdf$/i.test(href); }  // a PDF of the site, e.g. "files/x.pdf"
+
+(function () {
+  var pdfInline = navigator.pdfViewerEnabled && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  function embed(href) {  // address shown in the popup, or null to follow the link as usual
+    var m;
+    if (isPdf(href)) return pdfInline ? href + '#navpanes=0' : null;  // no thumbnail sidebar
+    if ((m = href.match(/^https:\/\/youtu\.be\/([\w-]+)/))) {
+      return 'https://www.youtube-nocookie.com/embed/' + m[1] + '?autoplay=1&rel=0';
+    }
+    if ((m = href.match(/^https:\/\/video\.ethz\.ch\/.*\/v\/([\w-]+)(\?t=\w+)?/))) {  // start time as "?t=40m28s"
+      return 'https://video.ethz.ch/~embed/!v/' + m[1] + (m[2] || '');
+    }
+    return null;
+  }
+  var links = Array.prototype.filter.call(document.querySelectorAll('.mat a'), function (a) {
+    return embed(a.getAttribute('href'));
   });
+  if (!links.length) return;
+
+  var dialog = document.createElement('dialog');
+  dialog.className = 'pdf-dialog';
+  dialog.innerHTML = '<div class="pdf-dialog-head"><h2></h2>' +
+    '<a class="pdf-action" target="_blank">Open in new tab</a><a class="pdf-action pdf-download" download>Download</a>' +
+    '<button type="button" class="bib-close" aria-label="Close">&times;</button></div>';
+  document.body.appendChild(dialog);
+  var heading = dialog.querySelector('h2');
+  var actions = dialog.querySelectorAll('.pdf-action');
+  var download = dialog.querySelector('.pdf-download');
+  var frame = null;  // a new frame for every file
+
+  links.forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      if (e.ctrlKey || e.metaKey || e.shiftKey || e.button !== 0) return;
+      e.preventDefault();
+      var href = link.getAttribute('href');
+      var entry = link.closest('article, section');
+      var label = entry && entry.querySelector('.pub-label, h2');  // "[J16]", or "PhD Thesis"
+      heading.textContent = (label ? label.textContent.trim() + ' · ' : '') + link.textContent.trim();
+      actions.forEach(function (a) { a.href = link.href; });
+      download.hidden = !isPdf(href);
+      dialog.classList.toggle('is-video', !isPdf(href));
+      dialog.showModal();
+      if (frame) frame.remove();
+      frame = dialog.appendChild(document.createElement('iframe'));
+      frame.title = link.textContent.trim();
+      frame.allow = 'autoplay; fullscreen; picture-in-picture; encrypted-media';
+      frame.src = embed(href);
+    });
+  });
+
+  dialog.querySelector('.bib-close').addEventListener('click', function () { dialog.close(); });
+  dialog.addEventListener('close', function () {  // the event comes late: another file may be open already
+    if (frame && !dialog.open) { frame.remove(); frame = null; }
+  });
+  closeOnBackdrop(dialog);
+})();
+
+// GoatCounter: opening a PDF or a video counts as an event, e.g. "files/x.pdf" titled "[J09] Slides"
+// (page views are counted by count.js itself).
+(function () {
+  function track(e) {
+    var link = e.target.closest && e.target.closest('a[href]');
+    if (!link || link.closest('dialog') || (e.type === 'auxclick' && e.button !== 1)) return;  // popup: counted already
+    var href = link.getAttribute('href');
+    if (!(isPdf(href) || /^https:\/\/(youtu\.be|video\.ethz\.ch)\//.test(href))) return;
+    if (!window.goatcounter || !window.goatcounter.count) return;
+    var entry = link.closest('.pub, .phd');
+    var label = entry && entry.querySelector('.pub-label, h2');
+    window.goatcounter.count({
+      path: isPdf(href) ? decodeURIComponent(href) : href,
+      title: (label ? label.textContent.trim() + ' ' : '') + link.textContent.trim(),
+      event: true
+    });
+  }
+  document.addEventListener('click', track);
+  document.addEventListener('auxclick', track);  // middle click
 })();
 
 // Publication filters: dropdown menus (type, year, venue, co-author) built from the papers on the page.

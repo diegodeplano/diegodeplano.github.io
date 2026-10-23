@@ -333,6 +333,30 @@ img { max-width: 100%; }
 }
 .bib-copy:hover, .bib-copy:focus-visible { background: #b8383e; }
 
+/* Material popup: manuscripts, slides and posters (desktop only) and videos, see site.js */
+.pdf-dialog {
+  display: none; width: min(1200px, calc(100% - 48px)); max-width: none; height: calc(100% - 48px); max-height: none;
+  padding: 0; overflow: hidden; border: 0; border-radius: 12px;
+  color: var(--text); background: #ffffff; box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+}
+.pdf-dialog[open] { display: flex; flex-direction: column; }
+.pdf-dialog::backdrop { background: rgba(0, 0, 0, 0.6); }
+.pdf-dialog-head { display: flex; align-items: center; gap: 10px; padding: 12px 16px 12px 24px; border-bottom: 1px solid #e3e3e3; }
+.pdf-dialog h2 { margin: 0 auto 0 0; font-size: 1.125rem; }
+.pdf-action {
+  padding: 0.15em 0.85em; font-size: 0.95rem; line-height: 1.6; color: var(--accent); text-decoration: none;
+  border: 1px solid var(--accent); border-radius: 4px; transition: background-color 0.15s, color 0.15s;
+}
+.pdf-action:hover, .pdf-action:focus-visible { background: var(--accent); color: #ffffff; }
+.pdf-dialog iframe { flex: 1; width: 100%; border: 0; background: #525659; }
+.pdf-dialog.is-video { width: min(1100px, calc(100% - 32px), (100vh - 140px) * 16 / 9); height: fit-content; }
+.pdf-dialog.is-video iframe { flex: none; aspect-ratio: 16 / 9; background: #000000; }
+.pdf-action[hidden] { display: none; }
+@media (max-width: 575px) {
+  .pdf-dialog-head { padding-left: 16px; }
+  .pdf-dialog h2 { font-size: 1rem; }
+}
+
 /* Publication filters: dropdown menus side by side (built by site.js) */
 .pub-filter { background: var(--light-bg); }
 .filter-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; padding: 18px 0; }
