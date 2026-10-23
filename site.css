@@ -2,7 +2,9 @@
    Breakpoints (same as the original template): xl >= 1200, lg 992-1199, md 768-991, sm 576-767, xs <= 575. */
 
 :root {
-  --accent: #db545a;
+  --accent: #b8383e;
+  --accent-hover: #9f3036;
+  --accent-on-dark: #f18f94;
   --dark: #333333;
   --text: #111111;
   --light-bg: #f2f2f2;
@@ -52,7 +54,7 @@ img { max-width: 100%; }
   color: #ffffff;
   text-decoration: none;
 }
-.site-nav a:hover, .site-nav a[aria-current="page"] { color: var(--accent); }
+.site-nav a:hover, .site-nav a[aria-current="page"] { color: var(--accent-on-dark); }
 
 .menu-toggle, .menu-close, .nav-overlay { display: none; }
 
@@ -231,7 +233,7 @@ img { max-width: 100%; }
 .phd .mat a:hover, .phd .mat a:focus-visible,
 .selected-paper .mat a:hover, .selected-paper .mat a:focus-visible { background: var(--accent); color: #ffffff; }
 .mat .bib-btn { font-family: inherit; cursor: pointer; background: var(--accent); color: #ffffff; }
-.mat .bib-btn:hover, .mat .bib-btn:focus-visible { background: #b8383e; border-color: #b8383e; }
+.mat .bib-btn:hover, .mat .bib-btn:focus-visible { background: var(--accent-hover); border-color: var(--accent-hover); }
 .pub-info .xref { color: inherit; text-decoration: underline; }
 .pub-title a:hover, .course-body a:hover, .pub-info .xref:hover { color: var(--accent); }
 .pub-logo { padding: 30px 0; }
@@ -248,6 +250,8 @@ img { max-width: 100%; }
 .course-body .container { min-height: 105px; }
 .course-body p { margin: 38px 0; font-size: 1.125rem; }
 .course-body .label { margin-right: 1.2em; }
+.course-body .course-description { margin: 24px 0 0; }
+.course-body .course-description + p { margin: 12px 0 28px; }
 
 /* ================================================================ lg: 992-1199 */
 @media (max-width: 1199px) {
@@ -287,7 +291,7 @@ img { max-width: 100%; }
     cursor: pointer;
   }
   .menu-toggle svg { display: block; width: 24px; height: 24px; fill: currentColor; }
-  .menu-toggle:hover { color: var(--accent); }
+  .menu-toggle:hover { color: var(--accent-on-dark); }
 
   .site-nav {
     position: fixed;
@@ -318,7 +322,7 @@ img { max-width: 100%; }
     line-height: 1;
     cursor: pointer;
   }
-  .menu-close:hover { color: var(--accent); }
+  .menu-close:hover { color: var(--accent-on-dark); }
   .nav-overlay { position: fixed; inset: 0; z-index: 20; background: rgba(0, 0, 0, 0.7); }
   .menu-open .nav-overlay { display: block; }
 
@@ -392,7 +396,7 @@ img { max-width: 100%; }
   padding: 0.6em 1.2em; font-family: inherit; font-size: 1rem; font-weight: 700; color: #ffffff;
   background: var(--accent); border: 0; border-radius: 6px; cursor: pointer;
 }
-.bib-copy:hover, .bib-copy:focus-visible { background: #b8383e; }
+.bib-copy:hover, .bib-copy:focus-visible { background: var(--accent-hover); }
 
 /* Material popup: manuscripts, slides and posters (desktop only) and videos, see site.js */
 .pdf-dialog {

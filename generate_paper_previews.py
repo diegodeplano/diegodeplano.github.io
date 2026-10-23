@@ -10,9 +10,9 @@ A02's arXiv version is CC BY 4.0: https://arxiv.org/abs/2506.17990
 """
 
 from pathlib import Path
-import re
 
 import fitz
+from sync_site import sync_site
 
 
 ROOT = Path(__file__).resolve().parent
@@ -28,8 +28,6 @@ PREVIEWS = {
 def main():
     output = ROOT / "images" / "selected"
     output.mkdir(parents=True, exist_ok=True)
-    home = ROOT / "index.html"
-    html = home.read_text(encoding="utf-8")
     for key, filename in PREVIEWS.items():
         source = ROOT / "files" / filename
         if not source.exists():
@@ -48,11 +46,7 @@ def main():
             target = output / f"{key}.png"
             pixmap.save(target)
             print(f"{target.relative_to(ROOT)}: {pixmap.width} x {pixmap.height}")
-            image = (f'<img src="images/selected/{key}.png" alt="" '
-                     f'width="{pixmap.width}" height="{pixmap.height}" loading="lazy" decoding="async">')
-            pattern = rf'(<!-- thumbnail:{key} -->).*?(<!-- /thumbnail:{key} -->)'
-            html = re.sub(pattern, lambda m: m[1] + image + m[2], html, flags=re.S)
-    home.write_text(html, encoding="utf-8")
+    sync_site()
 
 
 if __name__ == "__main__":

@@ -27,6 +27,7 @@ import urllib.request
 from difflib import SequenceMatcher
 from pathlib import Path
 from urllib.parse import quote, unquote, urlencode
+from sync_site import sync_site
 
 SITE = Path(__file__).resolve().parent
 PUB_FILE = SITE / 'Publications.html'
@@ -416,6 +417,7 @@ def add_paper():
     entry = render_paper(label, title, url or None, authors, venue, links, logo, logo_alt, logo_href or None,
                          bibtex=bibtex, year=year, venue_tag=venue_tag)
     PUB_FILE.write_text(content[:header.end()] + entry + content[header.end():], encoding='utf-8')
+    sync_site()
 
     print(f'Paper added as [{label}].')
     print('Remember: update the "Last update" footer and add the new PDFs to sitemap.xml.')
@@ -424,6 +426,7 @@ def add_paper():
 if __name__ == '__main__':
     if sys.argv[1:] == ['--relink']:
         PUB_FILE.write_text(relink_authors(PUB_FILE.read_text(encoding='utf-8'), load_coauthors()), encoding='utf-8')
+        sync_site()
         print('Co-author links updated from coauthors.json.')
     else:
         add_paper()
