@@ -156,8 +156,21 @@ img { max-width: 100%; }
 .areas p { margin-top: 20px; font-size: 1.125rem; }
 
 /* ---------------------------------------------------------------- biography */
-.bio .container { min-height: 667px; }
-.bio p { margin: 60px 0; font-size: 1.125rem; }
+.bio .container { padding-top: 44px; padding-bottom: 44px; }
+.bio h1 { margin-bottom: 24px; font-family: Oswald, sans-serif; font-size: 2.75rem; }
+.bio-section { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 32px; padding: 24px 0; border-top: 1px solid #e3e3e3; }
+.bio-section h2 { font-family: Oswald, sans-serif; font-size: 1.5rem; line-height: 1.35; }
+.bio p, .bio li, .bio-dates { font-size: 1.0625rem; }
+.bio ul { margin: 12px 0 0; padding-left: 22px; }
+.bio li + li { margin-top: 7px; }
+.bio-dates { margin: 16px 0 0; }
+.bio-dates > div { display: grid; grid-template-columns: 60px minmax(0, 1fr); gap: 14px; margin-top: 8px; }
+.bio-dates dt { font-weight: 700; }
+.bio-dates dd { margin: 0; }
+@media (max-width: 767px) {
+  .bio-section { grid-template-columns: 1fr; gap: 12px; }
+  .bio h1 { font-size: 2.25rem; }
+}
 
 /* ---------------------------------------------------------------- red banners (publication categories, courses) */
 .banner { background: var(--accent); color: #ffffff; }
@@ -353,7 +366,6 @@ img { max-width: 100%; }
   .hero .role { font-size: 1rem; }
   .areas h2 { font-size: 1.75rem; }
   .bio .container { min-height: 0; }
-  .bio p { margin: 35px 0; }
   .banner h2 { font-size: 1.875rem; }
   .pub { grid-template-columns: minmax(0, 7fr) minmax(0, 52fr) minmax(0, 1fr); }
   .course-body p { margin: 30px 0; }
@@ -408,6 +420,10 @@ img { max-width: 100%; }
 
 /* Publication filters: dropdown menus side by side (built by site.js) */
 .pub-filter { background: var(--light-bg); }
+.filter-search { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; padding-top: 20px; }
+.filter-search label { font-family: Roboto, sans-serif; font-weight: 700; font-size: 1.125rem; }
+.filter-search input { flex: 1 1 300px; min-width: 0; padding: 10px 12px; font: inherit; color: var(--text); background: #ffffff; border: 1px solid #c8c8c8; border-radius: 6px; }
+.filter-search input:focus-visible { outline: 2px solid #9f3036; outline-offset: 2px; }
 .filter-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; padding: 18px 0; }
 .filter-title { margin-right: 6px; font-family: Roboto, sans-serif; font-weight: 700; font-size: 1.125rem; }
 .filter-dd { position: relative; }

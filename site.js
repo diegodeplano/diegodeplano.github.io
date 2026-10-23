@@ -310,6 +310,11 @@ function isPdf(href) { return /^[^:]+\.pdf$/i.test(href); }  // a PDF of the sit
     return initials ? surname(name) + ', ' + initials : name;
   }
   function alpha(a, b) { return a.localeCompare(b, undefined, { sensitivity: 'base' }); }
+  function searchable(text) {
+    return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+      .replace(/multi[\s\-\u2010-\u2015]*agent/g, 'multiagent')
+      .replace(/[^a-z0-9]+/g, ' ').trim();
+  }
 
   // papers grouped under their category banner, in page order
   var groups = [], papers = [], group = null;
@@ -320,7 +325,9 @@ function isPdf(href) { return /^[^:]+\.pdf$/i.test(href); }  // a PDF of the sit
       groups.push(group);
     } else if (node.classList.contains('pub') && group) {
       var paper = { el: node, group: group, year: node.getAttribute('data-year') || '', venue: node.getAttribute('data-venue') || '',
-                    authors: coauthors(node), duplicate: !!node.querySelector('a.xref[href^="#section-J"]') };
+                    authors: coauthors(node), duplicate: !!node.querySelector('a.xref[href^="#section-J"]'),
+                    searchText: searchable(node.querySelector('.pub-title').textContent + ' ' +
+                      node.querySelector('.pub-label').textContent + ' ' + (node.getAttribute('data-keywords') || '')) };
       group.papers.push(paper);
       papers.push(paper);
     }
@@ -349,6 +356,15 @@ function isPdf(href) { return /^[^:]+\.pdf$/i.test(href); }  // a PDF of the sit
     venues.forEach(function (v) { dims[2].options.push({ value: v, label: v }); });
   });
 
+  var search = el('div', 'filter-search');
+  var searchLabel = search.appendChild(el('label', '', 'Search publications'));
+  searchLabel.htmlFor = 'pub-search';
+  var searchInput = search.appendChild(el('input'));
+  searchInput.id = 'pub-search';
+  searchInput.type = 'search';
+  searchInput.placeholder = 'Title or keywords, e.g. consensus, multi-agent';
+  searchInput.addEventListener('input', update);
+  var terms = [];
   var bar = el('div', 'filter-bar');
   bar.appendChild(el('span', 'filter-title', 'Filter publications'));
   dims.forEach(function (dim) {
@@ -378,8 +394,9 @@ function isPdf(href) { return /^[^:]+\.pdf$/i.test(href); }  // a PDF of the sit
   countEl.title = 'IEEE L-CSS letters presented at the CDC appear in both lists but are counted once';
   var resetBtn = status.appendChild(el('button', 'filter-reset', 'Reset'));
   resetBtn.type = 'button';
-  var empty = el('p', 'filter-empty', 'No publications match the selected filters.');
+  var empty = el('p', 'filter-empty', 'No publications match your search and filters.');
   var container = panel.querySelector('.container');
+  container.appendChild(search);
   container.appendChild(bar);
   container.appendChild(empty);
   panel.hidden = false;
@@ -391,7 +408,7 @@ function isPdf(href) { return /^[^:]+\.pdf$/i.test(href); }  // a PDF of the sit
     return [].concat(dim.of(paper)).indexOf(value) >= 0;
   }
   function matches(paper, skip) {
-    return dims.every(function (dim) {
+    return terms.every(function (term) { return paper.searchText.indexOf(term) >= 0; }) && dims.every(function (dim) {
       if (dim === skip) return true;
       var sel = selected(dim);
       return !sel.length || sel.some(function (o) { return has(dim, paper, o.value); });
@@ -401,6 +418,8 @@ function isPdf(href) { return /^[^:]+\.pdf$/i.test(href); }  // a PDF of the sit
   function counted(list) { return list.filter(function (p) { return !p.duplicate; }).length; }
 
   function update() {
+    var query = searchable(searchInput.value);
+    terms = query ? query.split(/\s+/) : [];
     var shown = 0, shownCounted = 0;
     papers.forEach(function (p) {
       p.el.hidden = !matches(p);
@@ -428,7 +447,7 @@ function isPdf(href) { return /^[^:]+\.pdf$/i.test(href); }  // a PDF of the sit
       dim.valueEl.textContent = !labels.length ? 'All' : labels.length > 1 && text.length > 20 ? labels.length + ' selected' : text;
       dim.dd.classList.toggle('is-active', labels.length > 0);
     });
-    var active = dims.some(function (dim) { return selected(dim).length; });
+    var active = terms.length > 0 || dims.some(function (dim) { return selected(dim).length; });
     var total = counted(papers);
     countEl.textContent = active ? 'Showing ' + shownCounted + ' of ' + total + ' publications' : total + ' publications';
     resetBtn.hidden = !active;
@@ -436,6 +455,7 @@ function isPdf(href) { return /^[^:]+\.pdf$/i.test(href); }  // a PDF of the sit
   }
 
   function reset() {
+    searchInput.value = '';
     dims.forEach(function (dim) { dim.choices.forEach(function (o) { o.input.checked = false; }); });
     update();
   }
