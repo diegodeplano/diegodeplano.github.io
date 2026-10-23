@@ -87,6 +87,9 @@ def render_selected(source, label):
     title_markup = required(r'<h3 class="pub-title">(.*?)</h3>', article, label)[1]
     title = plain(title_markup)
     bib = required(r'<template class="bib">(.*?)</template>', article, label)[1]
+    abstract = re.search(r'<template class="abstract">(.*?)</template>', article, re.S)
+    abstract_button = '<button type="button" class="abs-btn">Abstract</button>' if abstract else ''
+    abstract_template = f'\n            <template class="abstract">{abstract[1]}</template>' if abstract else ''
     doi = re.search(r'^\s*doi\s*=\s*\{([^}]+)\}', html.unescape(bib), re.M)
     url = ('https://doi.org/' + doi[1]) if doi else html.unescape(
         required(r'<a\b[^>]*href="([^"]+)"', title_markup, label)[1])
@@ -112,11 +115,11 @@ def render_selected(source, label):
             </figure>
             <div class="selected-paper-body">
               <p class="paper-meta">{html.escape(venue)} &middot; {html.escape(year)}</p>
-              <div class="mat paper-actions"><button type="button" class="bib-btn">BibTeX</button><a href="{manuscript}" target="_blank" rel="noopener">Manuscript</a></div>
+              <div class="mat paper-actions"><button type="button" class="bib-btn">BibTeX</button>{abstract_button}<a href="{manuscript}" target="_blank" rel="noopener">Manuscript</a></div>
               <h3 id="selected-{key}"><a href="{url}" target="_blank" rel="noopener" title="{title}">{title}</a></h3>
               <p class="paper-authors">{authors}</p>
             </div>
-            <template class="bib">{bib}</template>
+            <template class="bib">{bib}</template>{abstract_template}
           </article>'''
 
 

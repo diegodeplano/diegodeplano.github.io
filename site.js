@@ -192,6 +192,43 @@ function closeOnBackdrop(dialog) {
   closeOnBackdrop(dialog);
 })();
 
+// Abstract buttons: the abstract stored in the paper's <template class="abstract">, in a popup.
+// Each opening counts as a GoatCounter event, e.g. "abstract/J09".
+(function () {
+  var buttons = document.querySelectorAll('.abs-btn');
+  if (!buttons.length) return;
+
+  var dialog = document.createElement('dialog');
+  dialog.className = 'bib-dialog abs-dialog';
+  dialog.innerHTML = '<div class="bib-dialog-head"><div><span class="abs-label"></span><h2></h2></div>' +
+    '<button type="button" class="bib-close" aria-label="Close">&times;</button></div><p tabindex="-1" autofocus></p>';
+  document.body.appendChild(dialog);
+  var label = dialog.querySelector('.abs-label');
+  var heading = dialog.querySelector('h2');
+  var text = dialog.querySelector('p');
+
+  buttons.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var entry = btn.closest('article, section');
+      var tpl = entry.querySelector('template.abstract');
+      if (!tpl) return;
+      var pubLabel = entry.querySelector('.pub-label');  // "[J09]"
+      var code = pubLabel ? pubLabel.textContent.replace(/[\[\]\s]/g, '') : '';
+      label.textContent = (code ? '[' + code + '] ' : '') + 'Abstract';
+      heading.textContent = entry.querySelector('h3').textContent.trim();
+      text.textContent = tpl.content.textContent.trim();
+      dialog.showModal();
+      text.scrollTop = 0;
+      if (window.goatcounter && window.goatcounter.count) {
+        window.goatcounter.count({ path: 'abstract/' + code, title: label.textContent, event: true });
+      }
+    });
+  });
+
+  dialog.querySelector('.bib-close').addEventListener('click', function () { dialog.close(); });
+  closeOnBackdrop(dialog);
+})();
+
 // Material popup: manuscripts, slides, posters (PDF) and talk videos open over the page instead of a new tab.
 // PDFs only where the browser shows them inline and there is a mouse: phones and tablets open the file as before.
 // Ctrl/Cmd/Shift-click or middle click still open the link in a new tab.

@@ -8,7 +8,8 @@ displays them in capitals. Upload the PDFs to files/ and the logo to images/
 before running, so the script can check that the links will work.
 
 When the paper has a link (DOI, IEEE Xplore, publisher page or arXiv), its BibTeX
-entry is downloaded from Crossref or arXiv and shown behind a "BibTeX" button.
+entry is downloaded from Crossref or arXiv and shown behind a "BibTeX" button, and its
+abstract is taken from OpenAlex or arXiv (or pasted by hand) for the "Abstract" button.
 Each paper also records its year and a short venue name (e.g. TAC, CDC), which the
 filter menus of the page are built from.
 
@@ -221,14 +222,37 @@ def render_bibtex(bibtex):
     return f'\n        <template class="bib">{html.escape(bibtex, quote=False)}</template>' if bibtex else ''
 
 
-def render_materials(materials, bibtex=False):
+def render_abstract(abstract):
+    """Hidden text read by the Abstract button (site.js)."""
+    return f'\n        <template class="abstract">{html.escape(abstract, quote=False)}</template>' if abstract else ''
+
+
+def fetch_abstract(bibtex):
+    """Abstract of a paper from OpenAlex (by DOI) or arXiv (by eprint); None if not found."""
+    doi, eprint = bib_field(bibtex, 'doi'), bib_field(bibtex, 'eprint')
+    if doi:
+        work = fetch('https://api.openalex.org/works/https://doi.org/' + quote(doi))
+        index = work.get('abstract_inverted_index') or {}
+        words = sorted((pos, word) for word, positions in index.items() for pos in positions)
+        if words:
+            return ' '.join(word for _, word in words)
+    if eprint:
+        feed = fetch('http://export.arxiv.org/api/query?id_list=' + eprint, as_json=False)
+        summary = re.search(r'<summary>(.*?)</summary>', feed, re.DOTALL)
+        if summary:
+            return re.sub(r'\s+', ' ', html.unescape(summary.group(1))).strip()
+    return None
+
+
+def render_materials(materials, bibtex=False, abstract=False):
     """materials: list of (label, href, is_file), e.g. ('Slides', 'files/X.pdf', True).
-    With bibtex, a BibTeX button comes first."""
-    if not materials and not bibtex:
+    With bibtex and abstract, the BibTeX and Abstract buttons come first."""
+    if not materials and not bibtex and not abstract:
         return ''
     links = ''.join(
         f'<a href="{html.escape(href)}" target="_blank">{label}</a>' for label, href, _ in materials)
     button = '<button type="button" class="bib-btn">BibTeX</button>' if bibtex else ''
+    button += '<button type="button" class="abs-btn">Abstract</button>' if abstract else ''
     return f'<br><span class="mat">{button}{links}</span>'
 
 
@@ -272,7 +296,7 @@ def render_xref(note, label):
 
 
 def render_paper(label, title, url, authors, venue, materials, logo, logo_alt, logo_href=None, xref=None,
-                 bibtex=None, year=None, venue_tag=None):
+                 bibtex=None, year=None, venue_tag=None, abstract=None):
     """HTML for one publication followed by its divider line. label is e.g. 'J11'.
 
     url can be None for accepted papers without a DOI yet: the title is then shown without a link.
@@ -288,7 +312,7 @@ def render_paper(label, title, url, authors, venue, materials, logo, logo_alt, l
       <div class="pub-label">[{label}]</div>
       <div class="pub-body">
         <h3 class="pub-title">{title_html}</h3>
-        <p class="pub-info">{render_authors(authors)}<br>{venue_html}{render_materials(materials, bool(bibtex))}</p>{render_bibtex(bibtex)}
+        <p class="pub-info">{render_authors(authors)}<br>{venue_html}{render_materials(materials, bool(bibtex), bool(abstract))}</p>{render_bibtex(bibtex)}{render_abstract(abstract)}
       </div>
       <div class="pub-logo">{logo_html}</div>
     </article>
@@ -414,8 +438,21 @@ def add_paper():
         else:
             print('  No BibTeX entry found for this link: the paper is added without the BibTeX button.')
 
+    abstract = None
+    if bibtex:
+        try:
+            abstract = fetch_abstract(bibtex)
+        except Exception as e:  # network error: the abstract can still be pasted below
+            print(f'  Could not download the abstract ({e}).')
+        if abstract:
+            print('\n' + abstract + '\n')
+            if not ask_yes('Add the Abstract button with this text?'):
+                abstract = None
+    if not abstract:
+        abstract = ask('Paste the abstract on one line (blank for no Abstract button): ') or None
+
     entry = render_paper(label, title, url or None, authors, venue, links, logo, logo_alt, logo_href or None,
-                         bibtex=bibtex, year=year, venue_tag=venue_tag)
+                         bibtex=bibtex, year=year, venue_tag=venue_tag, abstract=abstract)
     PUB_FILE.write_text(content[:header.end()] + entry + content[header.end():], encoding='utf-8')
     sync_site()
 
