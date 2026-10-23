@@ -1,0 +1,53 @@
+# Weekly check of every link of the website: pages, PDFs and external sites.
+# Broken links are reported in an issue of this repository (GitHub e-mails the owner when it is opened);
+# later runs update the same issue while it stays open. Close it once the links are fixed.
+name: Check links
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'  # every Monday at 06:00 UTC
+  workflow_dispatch:     # "Run workflow" button in the Actions tab
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check links
+        id: lychee
+        uses: lycheeverse/lychee-action@v2
+        with:
+          # 403/418/429: publishers (IEEE, ScienceDirect, ResearchGate, Scopus) refuse automated visits
+          args: >-
+            --root-dir "${{ github.workspace }}"
+            --accept '100..=103,200..=299,403,418,429'
+            --max-retries 3
+            --timeout 30
+            --exclude 'gc\.zgo\.at'
+            --exclude 'goatcounter\.com'
+            --no-progress
+            './*.html'
+          fail: false
+
+      - name: Find the open report
+        id: report
+        if: steps.lychee.outputs.exit_code != 0
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          number=$(gh issue list --repo "${{ github.repository }}" --label 'broken links' --state open --json number --jq '.[0].number')
+          echo "number=$number" >> "$GITHUB_OUTPUT"
+
+      - name: Open or update the report
+        if: steps.lychee.outputs.exit_code != 0
+        uses: peter-evans/create-issue-from-file@v5
+        with:
+          title: Broken links on the website
+          content-filepath: ./lychee/out.md
+          issue-number: ${{ steps.report.outputs.number }}
+          labels: broken links
