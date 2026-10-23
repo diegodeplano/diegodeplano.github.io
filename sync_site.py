@@ -1,6 +1,7 @@
-"""Refresh generated homepage publications, asset versions, "Last update" and sitemap.xml.
+"""Refresh generated homepage publications and news, asset versions, "Last update" and sitemap.xml.
 
 Publications.html is the source for titles, authors, links and BibTeX.
+News.html is the news archive: the homepage shows its NEWS_ON_HOME most recent items.
 Run `python sync_site.py` after editing any page, site.css or site.js.
 Only SELECTED chooses which papers appear on the homepage; no paper metadata
 needs to be maintained twice. The footer date and the sitemap dates come from
@@ -20,7 +21,8 @@ from urllib.parse import unquote
 ROOT = Path(__file__).resolve().parent
 SITE_URL = 'https://diegodeplano.github.io/'
 SELECTED = ('J15', 'J11', 'J10', 'J07', 'A02')
-PAGES = ('index.html', 'Biography.html', 'Publications.html', 'Teachings.html')
+NEWS_ON_HOME = 6
+PAGES = ('index.html', 'Biography.html', 'Publications.html', 'Teachings.html', 'News.html')
 VENUES = {'TASE': 'IEEE T-ASE', 'TAC': 'IEEE TAC', 'L-CSS': 'IEEE L-CSS'}
 MONTHS = ('January', 'February', 'March', 'April', 'May', 'June', 'July',
           'August', 'September', 'October', 'November', 'December')
@@ -127,6 +129,14 @@ def sync_site():
                          pages['index.html'], count=1, flags=re.S)
     if count != 1:
         raise ValueError('Homepage selected publications container not found')
+    archive = required(r'<ul class="news-list is-archive">\s*(.*?)\s*</ul>', pages['News.html'], 'News.html')[1]
+    latest_news = re.findall(r'<li>.*?</li>', archive, re.S)[:NEWS_ON_HOME]
+    home, count = re.subn(r'(<ul class="news-list">).*?(</ul>)', lambda m: m[1] + '\n' +
+                         '          <!-- Generated from News.html by sync_site.py: the most recent items -->\n' +
+                         ''.join('          ' + item + '\n' for item in latest_news) + '        ' + m[2],
+                         home, count=1, flags=re.S)
+    if count != 1:
+        raise ValueError('Homepage news list not found')
     pages['index.html'] = home
     for asset in ('site.css', 'site.js'):
         # Normalize line endings so repeated runs on Windows remain stable.

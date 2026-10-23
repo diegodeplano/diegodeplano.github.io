@@ -150,9 +150,15 @@ img { max-width: 100%; }
   .selected-heading h2 { font-size: 1.875rem; }
 }
 
-/* ---------------------------------------------------------------- home: news (written by hand in index.html) */
+/* ---------------------------------------------------------------- news: home (six most recent) and archive (News.html) */
 .news { padding: 60px 0 0; }
-.news h2 { margin-bottom: 22px; font-family: Oswald, sans-serif; font-size: 2.25rem; line-height: 1.2; }
+.news-heading { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 24px; margin-bottom: 22px; }
+.news-heading h2 { font-family: Oswald, sans-serif; font-size: 2.25rem; line-height: 1.2; }
+.all-news { color: var(--dark); font-size: 0.95rem; text-underline-offset: 4px; }
+.all-news:hover { color: #9f3036; }
+.news-archive { padding: 44px 0 60px; }
+.news-archive h1 { margin-bottom: 28px; font-family: Oswald, sans-serif; font-size: 2.75rem; }
+.news-list.is-archive { grid-template-columns: minmax(0, 820px); gap: 24px; }
 .news-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 48px; margin: 0; padding: 0; list-style: none; }
 .news-list li { padding-left: 14px; border-left: 3px solid var(--accent); }
 .news-list time { display: block; font-family: Oswald, sans-serif; font-size: 0.95rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--accent); }
@@ -162,7 +168,8 @@ img { max-width: 100%; }
 .news-list a:focus-visible { outline: 2px solid var(--accent-hover); outline-offset: 3px; }
 @media (max-width: 767px) {
   .news { padding-top: 38px; }
-  .news h2 { font-size: 1.875rem; }
+  .news-heading h2 { font-size: 1.875rem; }
+  .news-archive h1 { font-size: 2.25rem; }
   .news-list { grid-template-columns: 1fr; gap: 18px; }
 }
 

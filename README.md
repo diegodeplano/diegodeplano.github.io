@@ -20,8 +20,12 @@ and rewrites `sitemap.xml` (the four pages and every file they link to), dating
 each entry by its last git commit, or today if it changed since. The site remains
 fully static, and the generated cards are also available without JavaScript.
 
-The homepage "News" list is written by hand in `index.html` (newest first, about
-six items).
+## Add a news item
+
+`News.html` is the news archive. Add the new item at the top of its list (same
+`<li><time datetime="YYYY-MM">Mon YYYY</time><p>…</p></li>` format), then run
+`python sync_site.py`: the homepage shows the six most recent items
+(`NEWS_ON_HOME` in `sync_site.py`) and older ones remain in the archive.
 
 To choose different selected publications, change `SELECTED` in `sync_site.py`.
 Each selected entry needs a first-page PNG in `images/selected/`, and its
