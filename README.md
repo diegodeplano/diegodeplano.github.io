@@ -8,15 +8,20 @@ Static HTML, CSS and JavaScript, published from `main` through GitHub Pages.
 manuscripts and BibTeX. The homepage's five selected publications are generated
 from these entries; edit their metadata only in `Publications.html`.
 
-After editing publications or `site.css` / `site.js`, run:
+After editing any page or `site.css` / `site.js`, run:
 
 ```powershell
 python sync_site.py
 ```
 
 This refreshes the selected cards and the CSS/JavaScript version URLs in all four
-pages, so visitors receive updated assets. The site remains fully static, and
-the generated cards are also available without JavaScript.
+pages, so visitors receive updated assets. It also sets the "Last update" footer
+and rewrites `sitemap.xml` (the four pages and every file they link to), dating
+each entry by its last git commit, or today if it changed since. The site remains
+fully static, and the generated cards are also available without JavaScript.
+
+The homepage "News" list is written by hand in `index.html` (newest first, about
+six items).
 
 To choose different selected publications, change `SELECTED` in `sync_site.py`.
 Each selected entry needs a first-page PNG in `images/selected/`, and its

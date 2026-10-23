@@ -1,21 +1,69 @@
-"""Refresh generated homepage publications and asset versions.
+"""Refresh generated homepage publications, asset versions, "Last update" and sitemap.xml.
 
 Publications.html is the source for titles, authors, links and BibTeX.
-Run `python sync_site.py` after editing publications or site.css/site.js.
+Run `python sync_site.py` after editing any page, site.css or site.js.
 Only SELECTED chooses which papers appear on the homepage; no paper metadata
-needs to be maintained twice. Uses the Python standard library only.
+needs to be maintained twice. The footer date and the sitemap dates come from
+the last git commit of each file (today for files changed since).
+Uses the Python standard library only.
 """
 
+import datetime
 import hashlib
 import html
 from pathlib import Path
 import re
 import struct
+import subprocess
+from urllib.parse import unquote
 
 ROOT = Path(__file__).resolve().parent
+SITE_URL = 'https://diegodeplano.github.io/'
 SELECTED = ('J15', 'J11', 'J10', 'J07', 'A02')
 PAGES = ('index.html', 'Biography.html', 'Publications.html', 'Teachings.html')
 VENUES = {'TASE': 'IEEE T-ASE', 'TAC': 'IEEE TAC', 'L-CSS': 'IEEE L-CSS'}
+MONTHS = ('January', 'February', 'March', 'April', 'May', 'June', 'July',
+          'August', 'September', 'October', 'November', 'December')
+
+
+def last_changes():
+    """Return a function giving the date (YYYY-MM-DD) of the last change of a file."""
+    today = datetime.date.today().isoformat()
+    dates = {}
+    try:
+        def git(*args):
+            return subprocess.run(['git', '-c', 'core.quotePath=false', *args], cwd=ROOT, check=True,
+                                  capture_output=True, text=True, encoding='utf-8').stdout
+        date = None
+        for line in git('log', '--format=@%cs', '--name-only').splitlines():
+            if line.startswith('@'):
+                date = line[1:]
+            elif line and line not in dates:  # newest commits come first
+                dates[line] = date
+        for line in git('status', '--porcelain', '--untracked-files=all').splitlines():
+            dates[line[3:].split(' -> ')[-1].strip('"')] = today
+    except (OSError, subprocess.CalledProcessError):  # no git: fall back to the file dates
+        pass
+
+    def changed(path):
+        if path in dates:
+            return dates[path]
+        return datetime.date.fromtimestamp((ROOT / path).stat().st_mtime).isoformat()
+    return changed
+
+
+def render_sitemap(pages, page_dates, changed):
+    """The four pages, then every file they link to, in order of appearance."""
+    urls = [(SITE_URL + ('' if name == 'index.html' else name), page_dates[name]) for name in PAGES]
+    seen = set()
+    for name in PAGES:
+        for href in re.findall(r'href="(files/[^"#?]+)"', pages[name]):
+            if href not in seen:
+                seen.add(href)
+                urls.append((SITE_URL + href, changed(unquote(html.unescape(href)))))
+    rows = ''.join(f'  <url><loc>{html.escape(loc)}</loc><lastmod>{date}</lastmod></url>\n' for loc, date in urls)
+    return ('<?xml version="1.0" encoding="UTF-8"?>\n'
+            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + rows + '</urlset>\n')
 
 
 def plain(markup):
@@ -87,12 +135,24 @@ def sync_site():
         for name in pages:
             pages[name] = re.sub(re.escape(asset) + r'\?v=[a-f0-9]+',
                                  asset + '?v=' + version, pages[name])
+    changed = last_changes()
+    today = datetime.date.today().isoformat()
+    page_dates = {name: today if pages[name] != (ROOT / name).read_text(encoding='utf-8') else changed(name)
+                  for name in PAGES}
+    latest = datetime.date.fromisoformat(max(page_dates.values()))
+    for name in pages:
+        pages[name] = re.sub(r'Last update: [A-Za-z]+ \d{4}',
+                             f'Last update: {MONTHS[latest.month - 1]} {latest.year}', pages[name])
     for name, text in pages.items():
         if text != (ROOT / name).read_text(encoding='utf-8'):
             with (ROOT / name).open('w', encoding='utf-8', newline='\n') as stream:
                 stream.write(text)
+    sitemap = render_sitemap(pages, page_dates, changed)
+    if sitemap != (ROOT / 'sitemap.xml').read_text(encoding='utf-8'):
+        with (ROOT / 'sitemap.xml').open('w', encoding='utf-8', newline='\n') as stream:
+            stream.write(sitemap)
 
 
 if __name__ == '__main__':
     sync_site()
-    print('Homepage publications and asset versions synchronized.')
+    print('Homepage publications, asset versions, "Last update" and sitemap.xml synchronized.')

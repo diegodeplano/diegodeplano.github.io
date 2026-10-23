@@ -419,8 +419,7 @@ def add_paper():
     PUB_FILE.write_text(content[:header.end()] + entry + content[header.end():], encoding='utf-8')
     sync_site()
 
-    print(f'Paper added as [{label}].')
-    print('Remember: update the "Last update" footer and add the new PDFs to sitemap.xml.')
+    print(f'Paper added as [{label}]; "Last update" and sitemap.xml refreshed.')
 
 
 if __name__ == '__main__':
