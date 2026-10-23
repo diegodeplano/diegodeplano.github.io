@@ -16,7 +16,7 @@ python sync_site.py
 
 This refreshes the selected cards and the CSS/JavaScript version URLs in all the
 pages, so visitors receive updated assets. It also sets the "Last update" footer
-and rewrites `sitemap.xml` (the four pages and every file they link to), dating
+and rewrites `sitemap.xml` (the pages and every file they link to), dating
 each entry by its last git commit, or today if it changed since. The site remains
 fully static, and the generated cards are also available without JavaScript.
 
