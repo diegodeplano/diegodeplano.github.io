@@ -1,5 +1,8 @@
 # GitHub Pages build settings.
 # These files stay in the repository but are not published on the website.
 exclude:
+  - README.md
   - add_paper.py
   - coauthors.json
+  - generate_paper_previews.py
+  - sync_site.py
