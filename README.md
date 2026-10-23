@@ -14,7 +14,7 @@ After editing any page or `site.css` / `site.js`, run:
 python sync_site.py
 ```
 
-This refreshes the selected cards and the CSS/JavaScript version URLs in all four
+This refreshes the selected cards and the CSS/JavaScript version URLs in all the
 pages, so visitors receive updated assets. It also sets the "Last update" footer
 and rewrites `sitemap.xml` (the four pages and every file they link to), dating
 each entry by its last git commit, or today if it changed since. The site remains
@@ -41,6 +41,14 @@ automatically. `python add_paper.py --relink` updates co-author links from
 PyMuPDF and synchronizes the home. Publisher PDFs belong in the ignored
 `files/published/` directory; public manuscript links remain separate from
 the PDF sources used for thumbnails.
+
+## Fonts and missing pages
+
+The fonts (Open Sans, Oswald, Roboto) are served from `fonts/` with their OFL
+licences, so pages make no requests to Google. `404.html` is shown by GitHub
+Pages for any missing address; its links are absolute (`/site.css`) and a small
+script forwards the addresses of the old site (`Home.html`, `Projects.html`,
+`blog/`) to the current pages.
 
 ## Local preview
 

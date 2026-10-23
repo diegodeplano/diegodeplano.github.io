@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page not found - Diego Deplano</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta name="theme-color" content="#333333">
+  <link rel="stylesheet" href="/site.css?v=d4f6333d6576">
+  <script src="/site.js?v=729270adabc2" defer></script>
+  <!-- GoatCounter: privacy-friendly visit statistics, no cookies -->
+  <script data-goatcounter="https://diegodeplano.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+  <script>
+    // Addresses of the previous version of the site, which visitors may still have in old links.
+    (function () {
+      var moved = { '/home.html': '/', '/projects.html': '/Biography.html#bio-projects', '/blog/': '/News.html' };
+      var path = location.pathname.toLowerCase();
+      for (var old in moved) {
+        if (path === old || (old.slice(-1) === '/' && path.indexOf(old) === 0)) { location.replace(moved[old]); return; }
+      }
+    })();
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="site-title" href="/">Diego Deplano's Website</a>
+      <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><rect y="1" width="16" height="2"></rect><rect y="7" width="16" height="2"></rect><rect y="13" width="16" height="2"></rect></svg>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Main">
+        <button class="menu-close" type="button" aria-label="Close menu">&times;</button>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/Biography.html">Biography</a></li>
+          <li><a href="/Publications.html">Publications</a></li>
+          <li><a href="/Teachings.html">Teaching</a></li>
+          <li><a href="/News.html">News</a></li>
+        </ul>
+      </nav>
+      <div class="nav-overlay"></div>
+    </div>
+  </header>
+
+  <main>
+    <section class="bio" aria-labelledby="not-found-heading">
+      <div class="container">
+        <h1 id="not-found-heading">Page not found</h1>
+        <div class="bio-content not-found">
+          <p>The page you are looking for does not exist or has moved: the website was redesigned in October 2026.</p>
+          <ul>
+            <li><a href="/">Home</a> – profile, news and selected publications</li>
+            <li><a href="/Biography.html">Biography</a> – position, awards, projects and academic service</li>
+            <li><a href="/Publications.html">Publications</a> – papers with manuscripts, slides and BibTeX</li>
+            <li><a href="/Teachings.html">Teaching</a> – course material</li>
+            <li><a href="/News.html">News</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+    <footer class="site-footer">
+      <p>- Last update: October 2026 -</p>
+    </footer>
+</body>
+</html>

@@ -23,6 +23,7 @@ SITE_URL = 'https://diegodeplano.github.io/'
 SELECTED = ('J15', 'J11', 'J10', 'J07', 'A02')
 NEWS_ON_HOME = 6
 PAGES = ('index.html', 'Biography.html', 'Publications.html', 'Teachings.html', 'News.html')
+NOT_IN_SITEMAP = ('404.html',)  # refreshed (asset versions, footer) but not listed in sitemap.xml
 VENUES = {'TASE': 'IEEE T-ASE', 'TAC': 'IEEE TAC', 'L-CSS': 'IEEE L-CSS'}
 MONTHS = ('January', 'February', 'March', 'April', 'May', 'June', 'July',
           'August', 'September', 'October', 'November', 'December')
@@ -121,7 +122,7 @@ def render_selected(source, label):
 
 def sync_site():
     source = (ROOT / 'Publications.html').read_text(encoding='utf-8')
-    pages = {name: (ROOT / name).read_text(encoding='utf-8') for name in PAGES}
+    pages = {name: (ROOT / name).read_text(encoding='utf-8') for name in PAGES + NOT_IN_SITEMAP}
     cards = '\n'.join(render_selected(source, label) for label in SELECTED)
     pattern = r'(<div class="selected-list">)\s*.*?(\s*</div>\s*<details class="thumbnail-credits">)'
     home, count = re.subn(pattern, lambda m: m[1] + '\n' +
