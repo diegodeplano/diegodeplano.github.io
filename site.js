@@ -151,7 +151,7 @@ function isPdf(href) { return /^[^:]+\.pdf$/i.test(href); }  // a PDF of the sit
     var href = link.getAttribute('href');
     if (!(isPdf(href) || /^https:\/\/(youtu\.be|video\.ethz\.ch)\//.test(href))) return;
     if (!window.goatcounter || !window.goatcounter.count) return;
-    var entry = link.closest('.pub, .phd');
+    var entry = link.closest('.pub, .phd, .selected-paper');
     var label = entry && entry.querySelector('.pub-label, h2');
     window.goatcounter.count({
       path: isPdf(href) ? decodeURIComponent(href) : href,

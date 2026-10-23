@@ -96,6 +96,56 @@ img { max-width: 100%; }
 .hero .contacts a:hover { color: var(--accent); }
 .hero .contacts a.dept { color: var(--accent); font-weight: 700; }
 
+/* ---------------------------------------------------------------- home: direct links and selected papers */
+.profile-links { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 18px; }
+.profile-link {
+  display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+  min-height: 30px; padding: 4px 9px; border: 1px solid #bdbdbd; border-radius: 4px;
+  color: var(--dark); background: #ffffff; font-size: 0.78rem; font-weight: 400; line-height: 1.4; text-decoration: none;
+}
+.profile-link-primary { background: var(--dark); border-color: var(--dark); color: #ffffff; }
+.profile-link:hover { border-color: var(--dark); background: #e7e7e7; }
+.profile-link-primary:hover { background: #111111; color: #ffffff; }
+.link-format { font-size: 0.7em; letter-spacing: 0.04em; opacity: 0.8; }
+.profile-link:focus-visible, .selected-papers a:focus-visible { outline: 3px solid #9f3036; outline-offset: 4px; }
+.selected-papers { padding: 60px 0; }
+.selected-heading { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 24px; margin-bottom: 26px; }
+.selected-heading h2 { font-family: Oswald, sans-serif; font-size: 2.25rem; line-height: 1.2; }
+.all-publications { color: var(--dark); font-size: 0.95rem; text-underline-offset: 4px; }
+.all-publications:hover { color: #9f3036; }
+.selected-list { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: start; gap: 22px; }
+.selected-paper { min-width: 0; }
+.paper-preview { margin: 0; }
+.paper-thumbnail { display: block; aspect-ratio: 17 / 22; background: #f5f5f5; border: 1px solid #d8d8d8; box-shadow: 0 3px 9px #0000000a; transition: border-color 0.15s, box-shadow 0.15s; }
+.paper-thumbnail:hover { border-color: #999999; box-shadow: 0 5px 14px #00000014; }
+.paper-thumbnail img { display: block; width: 100%; height: 100%; object-fit: contain; background: #ffffff; }
+.paper-thumbnail-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; height: 100%; padding: 14px; color: #555555; text-align: center; font-family: Oswald, sans-serif; font-size: 1.25rem; }
+.thumbnail-pending { max-width: 130px; font-family: 'Open Sans', sans-serif; font-size: 0.75rem; color: #777777; }
+.selected-paper-body { padding-top: 14px; }
+.paper-meta { font-size: 0.75rem; color: #606060; }
+.selected-paper h3 { margin-top: 6px; font-size: 0.95rem; font-weight: 700; line-height: 1.5; }
+.selected-paper h3 a { color: var(--text); text-decoration: none; }
+.selected-paper h3 a:hover { color: #9f3036; text-decoration: underline; text-underline-offset: 3px; }
+.paper-authors { margin-top: 8px; font-size: 0.75rem; line-height: 1.6; color: #444444; }
+.paper-authors .me { text-decoration: underline; }
+.paper-authors .coauthor { color: inherit; text-decoration: none; }
+.paper-authors .coauthor:hover, .paper-authors .coauthor:focus-visible { color: #9f3036; }
+.selected-paper .paper-actions { display: flex; flex-wrap: wrap; gap: 6px; margin: 9px 0 10px; }
+.selected-paper .mat.paper-actions a, .selected-paper .mat.paper-actions .bib-btn { padding: 0.15em 0.65em; font-size: 0.75rem; }
+.thumbnail-credits { margin-top: 22px; font-size: 0.7rem; color: #606060; }
+.thumbnail-credits summary { width: fit-content; padding: 5px 0; cursor: pointer; }
+.thumbnail-credits p { margin-top: 8px; }
+.thumbnail-credits a { color: inherit; }
+.thumbnail-credits ul { margin: 8px 0 0; padding-left: 20px; }
+@media (max-width: 991px) {
+  .selected-list { grid-template-columns: repeat(5, minmax(175px, 1fr)); gap: 18px; overflow-x: auto; padding: 3px 3px 15px; scroll-snap-type: x proximity; }
+  .selected-paper { scroll-snap-align: start; }
+}
+@media (max-width: 767px) {
+  .selected-papers { padding: 38px 0; }
+  .selected-heading h2 { font-size: 1.875rem; }
+}
+
 /* ---------------------------------------------------------------- home: research interests */
 .areas { background: var(--light-bg); }
 .areas .container { display: grid; grid-template-columns: 1fr 1fr; padding: 60px 0; min-height: 413px; }
@@ -156,14 +206,15 @@ img { max-width: 100%; }
 .course-body .sep { margin: 0 0.9em; }
 /* material links rendered as buttons: side by side, wrapping to the left edge */
 .pub-info .mat, .phd .mat { display: flex; flex-wrap: wrap; gap: 0.5em; margin: 0.3em 0; }
-.pub-info .mat a, .phd .mat a, .mat .bib-btn {
+.pub-info .mat a, .phd .mat a, .selected-paper .mat a, .mat .bib-btn {
   display: inline-block; padding: 0.15em 0.85em;
   font-size: 0.95rem; line-height: 1.6; color: var(--accent); text-decoration: none;
   border: 1px solid var(--accent); border-radius: 4px; background: #ffffff;
   transition: background-color 0.15s, color 0.15s;
 }
 .pub-info .mat a:hover, .pub-info .mat a:focus-visible,
-.phd .mat a:hover, .phd .mat a:focus-visible { background: var(--accent); color: #ffffff; }
+.phd .mat a:hover, .phd .mat a:focus-visible,
+.selected-paper .mat a:hover, .selected-paper .mat a:focus-visible { background: var(--accent); color: #ffffff; }
 .mat .bib-btn { font-family: inherit; cursor: pointer; background: var(--accent); color: #ffffff; }
 .mat .bib-btn:hover, .mat .bib-btn:focus-visible { background: #b8383e; border-color: #b8383e; }
 .pub-info .xref { color: inherit; text-decoration: underline; }
