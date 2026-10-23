@@ -106,7 +106,8 @@
     return first.textContent.split(/,|\band\b/).map(function (s) { return s.trim(); })
       .filter(function (s) { return s && !/Deplano/.test(s); });
   }
-  function surname(name) { return name.split(/\s+/).pop(); }
+  function surname(name) { return name.replace(/^([A-Z]\.\s*)+/, ''); }  // "Z.A.Z. Sanai Dashti" -> "Sanai Dashti"
+  function alpha(a, b) { return a.localeCompare(b, undefined, { sensitivity: 'base' }); }
 
   // papers grouped under their category banner, in page order
   var groups = [], papers = [], group = null;
@@ -124,22 +125,23 @@
   });
   if (!papers.length) return;
 
+  // menus in alphabetical order (years: newest first); categories alphabetical in every menu
+  var sortedGroups = groups.slice().sort(function (a, b) { return alpha(a.short, b.short); });
   var dims = [
     { name: 'Type', of: function (p) { return p.group.id; },
-      options: groups.map(function (g) { return { value: g.id, label: g.short }; }) },
+      options: sortedGroups.map(function (g) { return { value: g.id, label: g.short }; }) },
     { name: 'Year', of: function (p) { return p.year; },
       options: Object.keys(countBy(papers, function (p) { return p.year; })).sort().reverse()
         .map(function (y) { return { value: y, label: y }; }) },
     { name: 'Published in', of: function (p) { return p.venue; }, options: [] },
     { name: 'Co-author', of: function (p) { return p.authors; }, options: [] }
   ];
-  var authorCounts = countBy(papers, function (p) { return p.authors; });  // most frequent co-authors first
+  var authorCounts = countBy(papers, function (p) { return p.authors; });  // co-authors by surname
   dims[3].options = Object.keys(authorCounts).sort(function (a, b) {
-    return authorCounts[b] - authorCounts[a] || surname(a).localeCompare(surname(b));
+    return alpha(surname(a), surname(b)) || alpha(a, b);
   }).map(function (name) { return { value: name, label: name }; });
-  groups.forEach(function (g) {  // venues listed under their category, most frequent first
-    var counts = countBy(g.papers, function (p) { return p.venue; });
-    var venues = Object.keys(counts).sort(function (a, b) { return counts[b] - counts[a] || a.localeCompare(b); });
+  sortedGroups.forEach(function (g) {  // venues listed under their category, alphabetically
+    var venues = Object.keys(countBy(g.papers, function (p) { return p.venue; })).sort(alpha);
     if (!venues.length) return;
     dims[2].options.push({ heading: g.label });
     venues.forEach(function (v) { dims[2].options.push({ value: v, label: v }); });

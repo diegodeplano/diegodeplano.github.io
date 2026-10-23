@@ -149,6 +149,13 @@ img { max-width: 100%; }
 .pub-title a { color: #000000; text-decoration: none; }
 .pub-info { margin-top: 10px; font-size: 1.125rem; line-height: 2.2; }
 .pub-info .me { text-decoration: underline; }
+/* co-authors linked to their personal/academic page (coauthors.json) */
+.pub-info a.coauthor {
+  color: inherit;
+  text-decoration: underline dotted #9a9a9a;
+  text-underline-offset: 3px;
+}
+.pub-info a.coauthor:hover, .pub-info a.coauthor:focus-visible { color: var(--accent); text-decoration-color: currentColor; }
 .course-body a { color: #000000; font-style: italic; text-decoration: none; }
 .course-body .sep { margin: 0 0.9em; }
 /* material links rendered as buttons: side by side, wrapping to the left edge */

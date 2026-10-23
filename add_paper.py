@@ -11,10 +11,15 @@ When the paper has a link (DOI, IEEE Xplore, publisher page or arXiv), its BibTe
 entry is downloaded from Crossref or arXiv and shown behind a "BibTeX" button.
 Each paper also records its year and a short venue name (e.g. TAC, CDC), which the
 filter menus of the page are built from.
+
+Co-author names link to their personal/academic page, listed in coauthors.json (name as
+written on the page -> URL). New co-authors are asked for once. After editing that file by
+hand, run  python add_paper.py --relink  to update the links of all papers.
 """
 import html
 import json
 import re
+import sys
 import time
 import unicodedata
 import urllib.error
@@ -25,6 +30,7 @@ from urllib.parse import quote, unquote, urlencode
 
 SITE = Path(__file__).resolve().parent
 PUB_FILE = SITE / 'Publications.html'
+COAUTHORS_FILE = SITE / 'coauthors.json'
 
 # Words kept capitalised in BibTeX titles: styles that lowercase titles would otherwise print
 # e.g. "lyapunov". Acronyms such as "BESS" are protected automatically.
@@ -225,8 +231,38 @@ def render_materials(materials, bibtex=False):
     return f'<br><span class="mat">{button}{links}</span>'
 
 
-def render_authors(authors):
-    return html.escape(authors).replace('D. Deplano', '<span class="me">D. Deplano</span>')
+def load_coauthors():
+    """Co-author name (as written on the page) -> personal/academic page, from coauthors.json."""
+    if not COAUTHORS_FILE.exists():
+        return {}
+    return json.loads(COAUTHORS_FILE.read_text(encoding='utf-8'))
+
+
+def save_coauthors(links):
+    ordered = dict(sorted(links.items(), key=lambda item: (item[0].split()[-1], item[0])))  # by surname
+    COAUTHORS_FILE.write_text(json.dumps(ordered, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+
+
+def render_authors(authors, links=None):
+    """'A. Giua, D. Deplano, ...' -> D. Deplano underlined, co-authors linked to their page."""
+    links = load_coauthors() if links is None else links
+    out = []
+    for name in (n.strip() for n in authors.split(',')):
+        if name == 'D. Deplano':
+            out.append('<span class="me">D. Deplano</span>')
+        elif links.get(name):
+            out.append(f'<a class="coauthor" href="{html.escape(links[name])}" target="_blank">{html.escape(name)}</a>')
+        else:
+            out.append(html.escape(name))
+    return ', '.join(out)
+
+
+def relink_authors(content, links):
+    """Rebuild the author line of every paper, so that it follows coauthors.json."""
+    def rebuild(m):
+        names = html.unescape(re.sub(r'<[^>]+>', '', m.group(2)))
+        return m.group(1) + render_authors(names, links) + '<br>'
+    return re.sub(r'(<p class="pub-info">)(.*?)<br>', rebuild, content)
 
 
 def render_xref(note, label):
@@ -306,6 +342,13 @@ def add_paper():
 
     title = ask('Paper title: ')
     authors = ask('Authors (e.g., D. Deplano, M. Franceschelli): ')
+    links = load_coauthors()
+    new_names = [n.strip() for n in authors.split(',') if n.strip() not in links and n.strip() != 'D. Deplano']
+    for name in new_names:  # asked once per co-author, then remembered in coauthors.json
+        url = full_url(ask(f'Personal/academic web page of {name} (blank for none): '))
+        links[name] = url or None
+    if new_names:
+        save_coauthors(links)
     venue_tag = None
     if kind == 'j':
         journal = ask('Journal name (e.g., IEEE Transactions on Automatic Control): ')
@@ -379,4 +422,8 @@ def add_paper():
 
 
 if __name__ == '__main__':
-    add_paper()
+    if sys.argv[1:] == ['--relink']:
+        PUB_FILE.write_text(relink_authors(PUB_FILE.read_text(encoding='utf-8'), load_coauthors()), encoding='utf-8')
+        print('Co-author links updated from coauthors.json.')
+    else:
+        add_paper()
