@@ -111,27 +111,23 @@ img { max-width: 100%; }
 
 /* ---------------------------------------------------------------- home: photo and contacts */
 .hero { background: var(--light-bg); }
-.hero .container { display: grid; grid-template-columns: 1fr 862px; min-height: 464px; }
+.hero .container { display: grid; grid-template-columns: 1fr 862px; padding: 56px 0; }
 
-.hero-photo { position: relative; width: 210px; height: 264px; margin: 108px 0 0 34px; }
-.hero-photo::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--accent);
-  border-radius: 30px;
-}
+/* the photo is as tall as the text next to it, from the name to the buttons (contain: size keeps it
+   from stretching the row), with a red accent on its left side */
+.hero-photo { justify-self: end; align-self: stretch; aspect-ratio: 4 / 5; max-width: calc(100% - 16px); margin-right: 16px; contain: size; }
 .hero-photo img {
-  position: absolute;
-  left: -6px;
-  top: 14px;
-  width: 200px;
-  height: 250px;
+  display: block;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  border-radius: 30px;
+  object-position: 50% 25%;
+  border-left: 6px solid var(--accent);
+  border-radius: 14px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.16);
 }
 
-.hero-text { padding: 60px 30px 15px 25px; }
+.hero-text { padding: 0 30px 0 25px; }
 .hero h1 { font-family: Oswald, sans-serif; font-weight: 700; font-size: 3rem; line-height: 1.1; }
 .hero .role { margin-top: 17px; font-family: Roboto, sans-serif; font-weight: 700; font-size: 1.5rem; line-height: 1.2; }
 .hero .contacts { margin-top: 17px; font-size: 1.125rem; }
@@ -333,9 +329,7 @@ img { max-width: 100%; }
 /* ================================================================ lg: 992-1199 */
 @media (max-width: 1199px) {
   .container { width: 940px; }
-  .hero .container { grid-template-columns: 1fr 653px; min-height: 483px; }
-  .hero-photo { margin-left: 30px; }
-  .hero-photo img { left: -2px; }
+  .hero .container { grid-template-columns: 1fr 653px; }
   .hero h1 { font-size: 2.75rem; }
   .hero .role { font-size: 1.375rem; }
   .hero .contacts { font-size: 1rem; }
@@ -403,11 +397,10 @@ img { max-width: 100%; }
   .nav-overlay { position: fixed; inset: 0; z-index: 20; background: rgba(0, 0, 0, 0.7); }
   .menu-open .nav-overlay { display: block; }
 
-  .hero .container { grid-template-columns: 1fr 441px; min-height: 493px; }
+  .hero .container { grid-template-columns: 1fr 441px; }
   .hero h1 { font-size: 2.5rem; }
   .hero .role { margin-top: 9px; font-size: 1.25rem; }
   .hero .contacts { margin-top: 25px; }
-  .hero-text { padding-bottom: 30px; }
   .areas .container { min-height: 423px; }
   .areas h2 { font-size: 2rem; }
   .banner .container { min-height: 85px; }
@@ -423,9 +416,8 @@ img { max-width: 100%; }
   .container { width: 540px; }
   .site-title { font-size: 1rem; }
 
-  .hero .container { display: flow-root; min-height: 0; padding-bottom: 40px; }
-  .hero-photo { width: 157px; height: 197px; margin: 30px auto 0; }
-  .hero-photo img { left: -3px; top: 9px; width: 150px; height: 188px; }
+  .hero .container { display: flow-root; padding: 30px 0 40px; }
+  .hero-photo { width: 168px; height: 210px; max-width: none; margin: 0 auto; aspect-ratio: auto; contain: none; }
   .hero-text { padding: 25px 10px 0; }
   .hero h1 { font-size: 2.25rem; }
   .hero .role { margin-top: 10px; font-size: 1.125rem; }
