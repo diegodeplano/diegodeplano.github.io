@@ -63,7 +63,11 @@ def render_sitemap(pages, page_dates, changed):
         for href in re.findall(r'href="(files/[^"#?]+)"', pages[name]):
             if href not in seen:
                 seen.add(href)
-                urls.append((SITE_URL + href, changed(unquote(html.unescape(href)))))
+                path = unquote(html.unescape(href))
+                if not (ROOT / path).exists():  # e.g. a paper added before uploading its PDF
+                    print(f'  Warning: {path} does not exist yet (linked from {name}); not listed in sitemap.xml.')
+                    continue
+                urls.append((SITE_URL + href, changed(path)))
     rows = ''.join(f'  <url><loc>{html.escape(loc)}</loc><lastmod>{date}</lastmod></url>\n' for loc, date in urls)
     return ('<?xml version="1.0" encoding="UTF-8"?>\n'
             '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + rows + '</urlset>\n')
