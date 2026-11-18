@@ -47,7 +47,7 @@ SPECIAL = {'ø': r'{\o}', 'ß': r'{\ss}', 'æ': r'{\ae}', 'ł': r'{\l}'}
 
 # prefix, id of the category banner section in Publications.html
 CATEGORIES = {
-    'a': ('A', 'section-category-arxiv'),
+    'p': ('P', 'section-category-preprints'),
     'j': ('J', 'section-category-j'),
     'c': ('C', 'section-category-c'),
 }
@@ -303,8 +303,8 @@ def render_paper(label, title, url, authors, venue, materials, logo, logo_alt, l
     year and venue_tag (e.g. 'CDC') feed the filter menus; arXiv preprints have no venue_tag.
     """
     title_html = f'<a href="{html.escape(url)}" target="_blank">{html.escape(title)}</a>' if url else html.escape(title)
-    img = f'<img src="images/{logo}" alt="{html.escape(logo_alt)}" loading="lazy">'
-    logo_html = f'<a href="{html.escape(logo_href)}" target="_blank">{img}</a>' if logo_href else img
+    img = f'<img src="images/{logo}" alt="{html.escape(logo_alt)}" loading="lazy">' if logo else ''
+    logo_html = f'<a href="{html.escape(logo_href)}" target="_blank">{img}</a>' if logo_href and logo else img
     venue_html = html.escape(venue) + (render_xref(*xref) if xref else '')
     data = (f' data-year="{html.escape(year)}"' if year else '') + \
            (f' data-venue="{html.escape(venue_tag)}"' if venue_tag else '')
@@ -358,7 +358,7 @@ def ask_venue_tag(name, content):
 
 def add_paper():
     print("Add a paper to Diego Deplano's website.")
-    kind = ask('Is this a (j)ournal paper, (c)onference paper, or (a)rxiv preprint? ').lower()[:1]
+    kind = ask('Is this a (j)ournal paper, (c)onference paper, or (p)reprint under review? ').lower()[:1]
     if kind not in CATEGORIES:
         print('Invalid type. Exiting.')
         return
@@ -384,14 +384,14 @@ def add_paper():
         logo_href = full_url(ask('Journal homepage URL (logo link): '))
         logo_alt = journal
         logo = ask('Logo filename in images/ (e.g., tacon.jpg): ')
-    elif kind == 'a':
+    elif kind == 'p':
         journal = ask('Submitted to (journal/conference name): ')
         round_num = ask('Review round number (1, 2, 3, ...) or blank if new: ')
         year = ask('Year: ')
         venue = (f'Under review at {journal} ({ordinal(int(round_num))} round), {year}' if round_num
                  else f'Under review at {journal}, {year}')
-        url = full_url(ask('arXiv link: '))
-        logo_href, logo_alt, logo = 'https://arxiv.org', 'arXiv', 'ARXIV.jpg'
+        url = full_url(ask('arXiv link (blank if not on arXiv): '))
+        logo_href, logo_alt, logo = ('https://arxiv.org', 'arXiv', 'ARXIV.jpg') if url else (None, '', None)
     else:
         conference = ask('Conference full name (e.g., 66th IEEE Conference on Decision and Control (CDC)): ')
         venue_tag = ask_venue_tag(conference, content)
@@ -411,7 +411,7 @@ def add_paper():
     for _, filename in materials:
         if not (SITE / 'files' / filename).exists():
             print(f'  Warning: files/{filename} does not exist yet; upload it before publishing.')
-    if not (SITE / 'images' / logo).exists():
+    if logo and not (SITE / 'images' / logo).exists():
         print(f'  Warning: images/{logo} does not exist yet.')
     links = [(label, file_href(filename), True) for label, filename in materials]
     if ask_yes('Do you have a video link?'):
@@ -423,6 +423,8 @@ def add_paper():
         return
     numbers = [int(n) for n in re.findall(rf'\[{prefix}(\d+)\]', content)]
     label = f'{prefix}{max(numbers, default=0) + 1:02d}'
+    if kind == 'p':  # preprints keep their My Papers code (P01, P02, ...; never reused)
+        label = (ask(f'Preprint code from My Papers (blank for {label}): ').upper() or label)
 
     bibtex = None
     if url:

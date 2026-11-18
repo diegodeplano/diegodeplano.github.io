@@ -78,11 +78,27 @@
       <div class="container"></div>
     </section>
 <!-- publication list: generated with add_paper.py -->
-    <section class="banner" id="section-category-arxiv">
-      <div class="container"><h2>arXiv Preprints</h2></div>
+    <section class="banner" id="section-category-preprints">
+      <div class="container"><h2>Preprints under review</h2></div>
     </section>
-    <article class="pub container" id="section-A01" data-year="2024">
-      <div class="pub-label">[A01]</div>
+    <article class="pub container" id="section-P02" data-year="2026">
+      <div class="pub-label">[P02]</div>
+      <div class="pub-body">
+        <h3 class="pub-title">ResDyNet: a Residual State-Space Neural Network for Nonlinear System Identification</h3>
+        <p class="pub-info"><a class="coauthor" href="https://www.marcoledda.it/" target="_blank">M. Ledda</a>, <span class="me">D. Deplano</span>, <a class="coauthor" href="https://www.alessandro-giua.it/" target="_blank">A. Giua</a>, <a class="coauthor" href="https://web.unica.it/unica/page/en/mauro_franceschelli" target="_blank">M. Franceschelli</a><br>Under review at IEEE Open Journal of Control Systems, 2026<br><span class="mat"><button type="button" class="bib-btn">BibTeX</button><button type="button" class="abs-btn">Abstract</button><a href="files/PREPRINT%20-%20RESDYNET%20-%20Manuscript.pdf" target="_blank">Manuscript</a></span></p>
+        <template class="bib">@unpublished{ledda2026resdynet,
+  author = {Ledda, Marco and Deplano, Diego and Giua, Alessandro and Franceschelli, Mauro},
+  title  = {{ResDyNet}: a Residual State-Space Neural Network for Nonlinear System Identification},
+  note   = {Under review at IEEE Open Journal of Control Systems},
+  year   = {2026}
+}</template>
+        <template class="abstract">This paper introduces ResDyNet, a structured neural state-space model for nonlinear system identification from input–output data. The architecture interprets residual learning from a dynamical-systems perspective by decomposing the encoder, state-transition map, and decoder into an explicit linear component and a nonlinear correction. In the state-transition map, the linear component retains the form of a latent state-space model, while the nonlinear correction is represented through a deep cascade of identity-residual blocks operating in an internal residual stream. This separates the system-level linear–nonlinear decomposition from the depth-wise residual mechanism used to model nonlinear effects. The architecture is initialized from an identified linear model and its finite-memory state reconstructor, while additional latent coordinates are introduced as trainable degrees of freedom. All parameters are then trained through a weighted multi-step prediction objective aligned with recursive rollout. We establish universal approximation of the proposed evolver. Numerical experiments show that the structured parametrization improves prediction accuracy over a comparable architecture without linear components, while the linear-informed initialization provides a more favorable optimization trajectory. Results on standard nonlinear system-identification benchmarks further demonstrate competitive prediction performance.</template>
+      </div>
+      <div class="pub-logo"></div>
+    </article>
+    <hr class="pub-sep container">
+    <article class="pub container" id="section-P01" data-year="2024">
+      <div class="pub-label">[P01]</div>
       <div class="pub-body">
         <h3 class="pub-title"><a href="https://arxiv.org/abs/2406.18467" target="_blank">Algebraic Connectivity Control and Maintenance with Application to Open Multi-Agent Networks</a></h3>
         <p class="pub-info"><a class="coauthor" href="https://scholar.google.com/citations?user=aE9yCDAAAAAJ" target="_blank">W. Zhao</a>, <span class="me">D. Deplano</span>, <a class="coauthor" href="https://fie.must.edu.mo/id-848/person/view/id-463.html" target="_blank">Z. Li</a>, <a class="coauthor" href="https://www.alessandro-giua.it/" target="_blank">A. Giua</a>, <a class="coauthor" href="https://web.unica.it/unica/page/en/mauro_franceschelli" target="_blank">M. Franceschelli</a><br>Under review at Automatica (4th round), 2024<br><span class="mat"><button type="button" class="bib-btn">BibTeX</button><button type="button" class="abs-btn">Abstract</button><a href="files/ARXIV%20-%20RANDREG%20-%20Manuscript.pdf" target="_blank">Manuscript</a></span></p>
