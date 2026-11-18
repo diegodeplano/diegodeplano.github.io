@@ -20,7 +20,7 @@ from urllib.parse import unquote
 
 ROOT = Path(__file__).resolve().parent
 SITE_URL = 'https://diegodeplano.github.io/'
-SELECTED = ('J15', 'J11', 'J10', 'J07', 'A02')
+SELECTED = ('J17', 'J15', 'J11', 'J10', 'J07')
 NEWS_ON_HOME = 6
 PAGES = ('index.html', 'Biography.html', 'Publications.html', 'Teachings.html', 'News.html')
 NOT_IN_SITEMAP = ('404.html',)  # refreshed (asset versions, footer) but not listed in sitemap.xml
@@ -111,7 +111,7 @@ def render_selected(source, label):
         raise ValueError(f'{image.name}: invalid PNG thumbnail')
     width, height = struct.unpack('>II', header[16:24])
     title, url, manuscript = map(html.escape, (title, url, manuscript))
-    destination = 'arXiv' if label.startswith('A') else 'the publisher website'
+    destination = 'arXiv' if 'arxiv.org' in url else 'the publisher website'
     return f'''          <article class="selected-paper" aria-labelledby="selected-{key}">
             <span class="pub-label" hidden>[{label}]</span>
             <figure class="paper-preview">
